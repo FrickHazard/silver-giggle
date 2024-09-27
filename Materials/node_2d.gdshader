@@ -6,14 +6,14 @@ uint hash(uvec2 x, uint seed){
     const uint m = 0x5bd1e995U;
     uint hash = seed;
     // process first vector element
-    uint k = x.x; 
+    uint k = x.x;
     k *= m;
     k ^= k >> uint(24);
     k *= m;
     hash *= m;
     hash ^= k;
     // process second vector element
-    k = x.y; 
+    k = x.y;
     k *= m;
     k ^= k >> uint(24);
     k *= m;
