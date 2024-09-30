@@ -33,5 +33,5 @@ entities_post_import="res://addons/ldtk-importer/post-import/entity-template.gd"
 level_post_import="res://addons/ldtk-importer/post-import/level-template.gd"
 world_post_import="res://addons/ldtk-importer/post-import/world-template.gd"
 Debug=""
-force_tileset_reimport=false
+force_tileset_reimport=true
 verbose_output=false
