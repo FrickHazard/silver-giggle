@@ -29,7 +29,7 @@ turbulence_enabled = true
 [node name="Levels" parent="." instance=ExtResource("1_vvg0e")]
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(97, 38)
+position = Vector2(45, 121)
 script = ExtResource("3_kolm1")
 max_speed = 80.0
 jump_cut_off = 0.0
