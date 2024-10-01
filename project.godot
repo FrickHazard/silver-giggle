@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=200
 window/size/viewport_height=200
+window/size/initial_position=Vector2i(100, 0)
 window/stretch/mode="canvas_items"
 
 [editor_plugins]
