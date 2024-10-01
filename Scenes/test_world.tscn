@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
-size = Vector2(8, 8)
+size = Vector2(7, 7)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0

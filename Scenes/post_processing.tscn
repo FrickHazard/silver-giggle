@@ -9,7 +9,7 @@ shader = ExtResource("1_78f6x")
 shader_parameter/speed = 0.33333
 shader_parameter/global_transform = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1mejk"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6jdn3"]
 shader = ExtResource("2_kgidd")
 shader_parameter/color1 = Color(1, 1, 1, 1)
 shader_parameter/color2 = Color(0, 0, 0, 1)
@@ -33,7 +33,7 @@ shader_parameter/pixel_strength = -4.0
 layout_mode = 3
 anchors_preset = 0
 
-[node name="Fog2" type="ColorRect" parent="."]
+[node name="Fog" type="ColorRect" parent="."]
 modulate = Color(0, 0, 0, 0.937255)
 self_modulate = Color(0, 0, 0, 0.411765)
 material = SubResource("ShaderMaterial_c43tw")
@@ -49,10 +49,9 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="OneBit" type="ColorRect" parent="."]
-visible = false
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(0, 0, 0, 1)
-material = SubResource("ShaderMaterial_1mejk")
+material = SubResource("ShaderMaterial_6jdn3")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,6 +61,7 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(1, 1, 1, 0)
 
 [node name="CRT" type="ColorRect" parent="."]
 modulate = Color(0, 0, 0, 1)
