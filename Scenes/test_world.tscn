@@ -1,12 +1,42 @@
-[gd_scene load_steps=7 format=3 uid="uid://baaqdc7p2hdfj"]
+[gd_scene load_steps=12 format=3 uid="uid://baaqdc7p2hdfj"]
 
+[ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
-[ext_resource type="Texture2D" uid="uid://b7bpggreomtm1" path="res://Levels/tilesets/bigbigtileset.png" id="3_fj06e"]
+[ext_resource type="Texture2D" uid="uid://dyr2762cu3xem" path="res://Assets/Sprites/player_sprite_sheet.png" id="3_2qdes"]
 [ext_resource type="Script" path="res://Scripts/basic_player_movement.gd" id="3_kolm1"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3kw1"]
+atlas = ExtResource("3_2qdes")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2o5tt"]
+atlas = ExtResource("3_2qdes")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkp4k"]
+atlas = ExtResource("3_2qdes")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_im0qd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3kw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2o5tt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkp4k")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0
@@ -25,17 +55,7 @@ turbulence_enabled = true
 
 [node name="TestWorld" type="Node2D"]
 
-[node name="Levels" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-script = null
+[node name="Levels" parent="." instance=ExtResource("1_fo8sa")]
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(45, 121)
@@ -46,10 +66,8 @@ jump_cut_off = 0.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_xcm8o")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player/CollisionShape2D"]
-texture = ExtResource("3_fj06e")
-region_enabled = true
-region_rect = Rect2(72, 8, 8, 8)
+[node name="Sprite2D" type="AnimatedSprite2D" parent="Player/CollisionShape2D"]
+sprite_frames = SubResource("SpriteFrames_im0qd")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(100, 100)
