@@ -1,10 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb3a4mx5q2jyr"]
+[gd_scene load_steps=12 format=3 uid="uid://cb3a4mx5q2jyr"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_vvg0e"]
 [ext_resource type="PackedScene" uid="uid://c3qgsd0ir41t0" path="res://Scenes/post_processing.tscn" id="2_85jws"]
+[ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="3_3etcf"]
 [ext_resource type="Texture2D" uid="uid://b7bpggreomtm1" path="res://Levels/tilesets/bigbigtileset.png" id="3_fj06e"]
 [ext_resource type="Script" path="res://Scripts/basic_player_movement.gd" id="3_kolm1"]
+[ext_resource type="AudioStream" uid="uid://c48ln8lm15fed" path="res://Audio/SFX/land.wav" id="4_7pwjj"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
+[ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="8_3nr44"]
+[ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="9_6ia0m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7)
@@ -33,6 +37,8 @@ position = Vector2(45, 121)
 script = ExtResource("3_kolm1")
 max_speed = 80.0
 jump_cut_off = 0.0
+jump_sound = ExtResource("3_3etcf")
+land_sound = ExtResource("4_7pwjj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_xcm8o")
@@ -63,3 +69,14 @@ offset_right = -100.0
 offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Ambient" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_3nr44")
+autoplay = true
+parameters/looping = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+visible = false
+stream = ExtResource("9_6ia0m")
+autoplay = true
+parameters/looping = true
