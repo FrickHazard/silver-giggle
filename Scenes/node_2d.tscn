@@ -8,6 +8,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4xpuk"]
 shader = ExtResource("1_mmmhf")
+shader_parameter/speed = 0.33333
 shader_parameter/global_transform = null
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gqn5m"]

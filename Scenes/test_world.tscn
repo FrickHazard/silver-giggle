@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb3a4mx5q2jyr"]
+[gd_scene load_steps=7 format=3 uid="uid://baaqdc7p2hdfj"]
 
-[ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_vvg0e"]
-[ext_resource type="PackedScene" uid="uid://c3qgsd0ir41t0" path="res://Scenes/post_processing.tscn" id="2_85jws"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
 [ext_resource type="Texture2D" uid="uid://b7bpggreomtm1" path="res://Levels/tilesets/bigbigtileset.png" id="3_fj06e"]
 [ext_resource type="Script" path="res://Scripts/basic_player_movement.gd" id="3_kolm1"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
@@ -26,7 +25,17 @@ turbulence_enabled = true
 
 [node name="TestWorld" type="Node2D"]
 
-[node name="Levels" parent="." instance=ExtResource("1_vvg0e")]
+[node name="Levels" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+script = null
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(45, 121)

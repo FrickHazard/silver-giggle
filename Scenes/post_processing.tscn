@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c3qgsd0ir41t0"]
+[gd_scene load_steps=7 format=3 uid="uid://bcbar6lbn03dd"]
 
 [ext_resource type="Shader" path="res://Materials/Shaders/node_2d.gdshader" id="1_78f6x"]
 [ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="2_kgidd"]
