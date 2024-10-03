@@ -12,9 +12,14 @@ extends CharacterBody2D
 @export var jump_buffer_time := 0.15
 @export var max_fall_speed := 500.0
 
-# Add variables for audio
 @export var jump_sound: AudioStream
 @export var land_sound: AudioStream
+
+@export var animated_sprite: AnimatedSprite2D
+const run_animation: String = "run"
+const jump_animation: String = "jump"
+const fall_animation: String = "fall"
+const idle_animation: String = "idle"
 
 var is_jumping := false
 var jump_buffer := 0.0
@@ -24,14 +29,13 @@ var audio_player_land: AudioStreamPlayer2D
 var was_on_floor := false
 
 func _ready():
-	# Initialize audio players
 	audio_player_jump = AudioStreamPlayer2D.new()
 	audio_player_jump.volume_db = -20
 	audio_player_jump.stream = jump_sound
 	add_child(audio_player_jump)
 
 	audio_player_land = AudioStreamPlayer2D.new()
-	audio_player_jump.volume_db = -20
+	audio_player_land.volume_db = -20
 	audio_player_land.stream = land_sound
 	add_child(audio_player_land)
 
@@ -43,6 +47,7 @@ func _physics_process(delta: float) -> void:
 	clamp_falling_speed()
 	move_and_slide()
 	check_landing()
+	handle_animation()
 
 func handle_input(delta: float) -> void:
 	var input_dir := Vector2.ZERO
@@ -79,7 +84,6 @@ func apply_jump_logic(delta: float) -> void:
 
 func jump() -> void:
 	velocity.y = -jump_force
-	# Play jump sound
 	audio_player_jump.play()
 
 func apply_coyote_time(delta: float) -> void:
@@ -92,9 +96,23 @@ func clamp_falling_speed() -> void:
 	if velocity.y > max_fall_speed:
 		velocity.y = max_fall_speed
 
-# Function to detect landing
 func check_landing() -> void:
 	if is_on_floor() and not was_on_floor:
-		# Play landing sound
 		audio_player_land.play()
 	was_on_floor = is_on_floor()
+
+func handle_animation() -> void:
+	if not is_on_floor():
+		if velocity.y < 0:
+			animated_sprite.play(jump_animation)
+		elif velocity.y > 0:
+			animated_sprite.play(fall_animation)
+	elif velocity.x != 0:
+		animated_sprite.play(run_animation)
+	else:
+		animated_sprite.play(idle_animation)
+
+	if velocity.x >= 0.0:
+		animated_sprite.flip_h = false
+	else:
+		animated_sprite.flip_h = true
