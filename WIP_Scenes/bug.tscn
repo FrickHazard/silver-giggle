@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://duuv0jmitprcq"]
+
+[ext_resource type="Material" uid="uid://cb356oxc0gvlu" path="res://WIP_Scenes/bug_segment.tres" id="1_pua22"]
+[ext_resource type="Script" path="res://WIP_Scenes/segment.gd" id="2_yo3l1"]
+[ext_resource type="Script" path="res://WIP_Scenes/Leg.gd" id="3_1kmad"]
+
+[node name="Bug" type="Node2D"]
+
+[node name="Body" type="Polygon2D" parent="."]
+material = ExtResource("1_pua22")
+position = Vector2(-70, 0)
+color = Color(0.519891, 0.00835534, 0.15553, 1)
+polygon = PackedVector2Array(-35, -35, -25, -35, -15, -35, -5, -35, 5, -35, 15, -35, 25, -35, 35, -35, 35, 35, 25, 35, 15, 35, 5, 35, -5, 35, -15, 35, -25, 35, -35, 35)
+script = ExtResource("2_yo3l1")
+
+[node name="Head" type="Polygon2D" parent="." node_paths=PackedStringArray("back_segment", "legs", "target")]
+material = ExtResource("1_pua22")
+color = Color(0.519891, 0.00835534, 0.15553, 1)
+polygon = PackedVector2Array(-35, -35, -25, -35, -15, -35, -5, -35, 5, -35, 15, -35, 25, -35, 35, -35, 35, 35, 25, 35, 15, 35, 5, 35, -5, 35, -15, 35, -25, 35, -35, 35)
+script = ExtResource("2_yo3l1")
+back_segment = NodePath("../Body")
+segment_type = 0
+legs = [NodePath("LeftLeg"), NodePath("RightLeg")]
+target = NodePath("../Target")
+
+[node name="LeftLeg" type="Polygon2D" parent="Head"]
+rotation = -1.5708
+color = Color(0.070478, 0.21136, 0.24672, 1)
+polygon = PackedVector2Array(0, -5, 60, -5, 60, 5, 0, 5)
+script = ExtResource("3_1kmad")
+
+[node name="RightLeg" type="Polygon2D" parent="Head"]
+rotation = 1.5708
+polygon = PackedVector2Array(0, -5, 60, -5, 60, 5, 0, 5)
+script = ExtResource("3_1kmad")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(65, 0)
+
+[node name="Target" type="Node2D" parent="."]
+position = Vector2(377, -74)

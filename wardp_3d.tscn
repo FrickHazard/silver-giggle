@@ -1,11 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba2i5j5j1ge3r"]
+[gd_scene load_steps=6 format=3 uid="uid://ba2i5j5j1ge3r"]
 
-[ext_resource type="Material" uid="uid://c006enu216nfe" path="res://warp.tres" id="1_03bpe"]
+[ext_resource type="Material" uid="uid://c006enu216nfe" path="res://Materials/warp.tres" id="1_03bpe"]
+[ext_resource type="Shader" path="res://Materials/bug_body.gdshader" id="2_cjf1e"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_cc2b8"]
 material = ExtResource("1_03bpe")
 subdivide_width = 32
 subdivide_depth = 32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bd2y2"]
+render_priority = 0
+shader = ExtResource("2_cjf1e")
+
+[sub_resource type="BoxMesh" id="BoxMesh_8hokq"]
+material = SubResource("ShaderMaterial_bd2y2")
+subdivide_width = 16
+subdivide_height = 16
+subdivide_depth = 16
 
 [node name="Node3D" type="Node3D"]
 
@@ -18,3 +29,7 @@ transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.7422
 projection = 1
 fov = 71.7092
 size = 1.641
+
+[node name="BugBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0084922, -0.0275477, -0.175219)
+mesh = SubResource("BoxMesh_8hokq")
