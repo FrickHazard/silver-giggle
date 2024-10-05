@@ -127,7 +127,6 @@ shader_parameter/color2 = Color(0, 0, 0, 1)
 shader_parameter/threshold = 0.24
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mde4k"]
-radius = 7.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite")]
 position = Vector2(45, 121)
@@ -147,7 +146,7 @@ animation = &"fall"
 
 [node name="Abilities" type="Node2D" parent="." node_paths=PackedStringArray("abilities")]
 script = ExtResource("5_rk41c")
-abilities = [NodePath("Ward"), NodePath("FishingPole")]
+abilities = [NodePath("Ward")]
 
 [node name="Ward" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("light")]
 script = ExtResource("6_6077u")
@@ -180,14 +179,9 @@ cast_strength = 10
 visible = false
 
 [node name="BobberCollider" type="CollisionShape2D" parent="Abilities/FishingPole/Bobber"]
-position = Vector2(5, -6)
-scale = Vector2(0.2, 0.2)
 shape = SubResource("CircleShape2D_mde4k")
 
-[node name="BobberVisual" type="Sprite2D" parent="Abilities/FishingPole/Bobber/BobberCollider"]
-texture = ExtResource("7_ui5tf")
+[node name="BobberVisual" type="Node2D" parent="Abilities/FishingPole/Bobber/BobberCollider"]
 
 [node name="LineRender" type="Line2D" parent="Abilities/FishingPole"]
 visible = false
-points = PackedVector2Array(0, 0, 0, 0)
-width = 1.0
