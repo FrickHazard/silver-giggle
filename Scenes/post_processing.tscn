@@ -30,10 +30,8 @@ shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -4.0
 
 [node name="PostProcessing" type="CanvasLayer"]
-follow_viewport_enabled = true
 
 [node name="Fog_Layer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="Fog_ColorRect" type="ColorRect" parent="Fog_Layer"]
 modulate = Color(0, 0, 0, 0.937255)
@@ -44,7 +42,6 @@ offset_bottom = 200.0
 mouse_filter = 2
 
 [node name="OneBit_Layer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="OneBit_ColorRect" type="ColorRect" parent="OneBit_Layer"]
 material = SubResource("ShaderMaterial_xka1r")
@@ -55,7 +52,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CRT_Layer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="CRT_ColorRect" type="ColorRect" parent="CRT_Layer"]
 modulate = Color(0, 0, 0, 1)
