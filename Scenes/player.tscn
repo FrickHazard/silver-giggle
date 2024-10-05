@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://3sy1jmwarmdo"]
+[gd_scene load_steps=24 format=3 uid="uid://3sy1jmwarmdo"]
 
 [ext_resource type="Script" path="res://Scripts/basic_player_movement.gd" id="1_2o3ow"]
 [ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dyr2762cu3xem" path="res://Assets/Sprites/player_sprite_sheet.png" id="4_oplji"]
 [ext_resource type="Script" path="res://Scripts/player_abilities.gd" id="5_rk41c"]
 [ext_resource type="Script" path="res://Scripts/ward_ability.gd" id="6_6077u"]
+[ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="7_ui5tf"]
+[ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="8_jc5pr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7)
@@ -117,6 +119,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bgm1l"]
+shader = ExtResource("8_jc5pr")
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(0, 0, 0, 1)
+shader_parameter/threshold = 0.24
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite")]
 position = Vector2(45, 121)
 script = ExtResource("1_2o3ow")
@@ -137,5 +145,23 @@ animation = &"fall"
 script = ExtResource("5_rk41c")
 abilities = [NodePath("WardAbility")]
 
-[node name="WardAbility" type="Node2D" parent="Abilities"]
+[node name="WardAbility" type="Node2D" parent="Abilities" node_paths=PackedStringArray("light")]
 script = ExtResource("6_6077u")
+light = NodePath("Effect")
+
+[node name="Effect" type="Node2D" parent="Abilities/WardAbility"]
+visible = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Abilities/WardAbility/Effect"]
+stream = ExtResource("3_e2cyx")
+pitch_scale = 1.55
+autoplay = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Abilities/WardAbility/Effect"]
+texture = ExtResource("7_ui5tf")
+texture_scale = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Abilities/WardAbility/Effect"]
+material = SubResource("ShaderMaterial_bgm1l")
+scale = Vector2(5, 5)
+texture = ExtResource("7_ui5tf")

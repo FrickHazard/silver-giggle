@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://baaqdc7p2hdfj"]
+[gd_scene load_steps=9 format=3 uid="uid://baaqdc7p2hdfj"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
 [ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]
-[ext_resource type="Texture2D" uid="uid://dqd068o54d3gq" path="res://icon.svg" id="8_q2x7h"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0
@@ -53,17 +52,13 @@ lifetime = 6.0
 [node name="Ambient" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_2y5ce")
 autoplay = true
-
-[node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
-script = SubResource("GDScript_71laa")
-target = NodePath("../Camera2D")
+parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_4nreu")
 autoplay = true
+parameters/looping = true
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
-position = Vector2(51, 120)
-shadow_color = Color(0, 0, 0, 0.858824)
-texture = ExtResource("8_q2x7h")
+[node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
+script = SubResource("GDScript_71laa")
+target = NodePath("../Camera2D")

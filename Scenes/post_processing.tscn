@@ -11,8 +11,8 @@ shader_parameter/global_transform = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xka1r"]
 shader = ExtResource("2_kgidd")
-shader_parameter/color1 = Color(1, 1, 1, 1)
-shader_parameter/color2 = Color(0, 0, 0, 1)
+shader_parameter/color1 = Color(0.97, 1, 0.9, 1)
+shader_parameter/color2 = Color(0.02272, 0.0216, 0.03, 1)
 shader_parameter/threshold = 0.15
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ygdqc"]
@@ -42,6 +42,7 @@ offset_bottom = 200.0
 mouse_filter = 2
 
 [node name="OneBit_Layer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="OneBit_ColorRect" type="ColorRect" parent="OneBit_Layer"]
 material = SubResource("ShaderMaterial_xka1r")
