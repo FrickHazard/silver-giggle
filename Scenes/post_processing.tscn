@@ -9,11 +9,11 @@ shader = ExtResource("1_78f6x")
 shader_parameter/speed = 0.33333
 shader_parameter/global_transform = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6jdn3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xka1r"]
 shader = ExtResource("2_kgidd")
 shader_parameter/color1 = Color(1, 1, 1, 1)
 shader_parameter/color2 = Color(0, 0, 0, 1)
-shader_parameter/threshold = 0.5
+shader_parameter/threshold = 0.15
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ygdqc"]
 shader = ExtResource("3_k1bdy")
@@ -29,51 +29,38 @@ shader_parameter/aberation_amount = 0.1
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -4.0
 
-[node name="PostProcessing" type="Control"]
-layout_mode = 3
-anchors_preset = 0
+[node name="PostProcessing" type="CanvasLayer"]
+follow_viewport_enabled = true
 
-[node name="Fog" type="ColorRect" parent="."]
+[node name="Fog_Layer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="Fog_ColorRect" type="ColorRect" parent="Fog_Layer"]
 modulate = Color(0, 0, 0, 0.937255)
 self_modulate = Color(0, 0, 0, 0.411765)
 material = SubResource("ShaderMaterial_c43tw")
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 1
+offset_right = 200.0
+offset_bottom = 200.0
+mouse_filter = 2
+
+[node name="OneBit_Layer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="OneBit_ColorRect" type="ColorRect" parent="OneBit_Layer"]
+material = SubResource("ShaderMaterial_xka1r")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 200.0
-offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
-[node name="OneBit" type="ColorRect" parent="."]
-modulate = Color(0, 0, 0, 1)
-self_modulate = Color(0, 0, 0, 1)
-material = SubResource("ShaderMaterial_6jdn3")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 200.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 1, 1, 0)
+[node name="CRT_Layer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
-[node name="CRT" type="ColorRect" parent="."]
+[node name="CRT_ColorRect" type="ColorRect" parent="CRT_Layer"]
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(0, 0, 0, 1)
 material = SubResource("ShaderMaterial_ygdqc")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_right = 200.0
 offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
 mouse_filter = 2
-color = Color(1, 1, 1, 0)

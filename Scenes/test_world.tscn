@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://baaqdc7p2hdfj"]
+[gd_scene load_steps=9 format=3 uid="uid://baaqdc7p2hdfj"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
 [ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
+[ext_resource type="Script" path="res://Scenes/copy_position.gd" id="6_2vu72"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
 [ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]
 
@@ -39,20 +40,13 @@ amount = 100
 process_material = SubResource("ParticleProcessMaterial_g25d7")
 lifetime = 6.0
 
-[node name="PostProcessing" parent="Camera2D" instance=ExtResource("2_85jws")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -100.0
-offset_right = -100.0
-offset_bottom = -100.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="Ambient" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_2y5ce")
 autoplay = true
+
+[node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
+script = ExtResource("6_2vu72")
+target = NodePath("../Camera2D")
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_4nreu")
