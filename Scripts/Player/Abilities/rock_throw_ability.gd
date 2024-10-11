@@ -8,7 +8,6 @@ func use(input_direction : Vector2):
 
 	var rock_instance = rock_scene.instantiate() as RigidBody2D
 	rock_instance.position = user.position + input_direction
-	print(position)
-	get_tree().root.add_child(rock_instance)  # Add rock to the root node, not the player
+	get_tree().root.add_child(rock_instance) 
 
-	rock_instance.apply_impulse(input_direction*throw_force)
+	rock_instance.linear_velocity = input_direction*throw_force
