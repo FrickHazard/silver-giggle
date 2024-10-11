@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://3sy1jmwarmdo"]
+[gd_scene load_steps=28 format=3 uid="uid://3sy1jmwarmdo"]
 
 [ext_resource type="Script" path="res://Scripts/Player/basic_player_movement.gd" id="1_2o3ow"]
 [ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
@@ -8,7 +8,9 @@
 [ext_resource type="Script" path="res://Scripts/Player/Abilities/ward_ability.gd" id="6_6077u"]
 [ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="7_ui5tf"]
 [ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="8_jc5pr"]
-[ext_resource type="Script" path="res://Scripts/Player/Abilities/fighing_pole_ability.gd" id="9_d0o1o"]
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/fishing_pole_ability.gd" id="9_d0o1o"]
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/rock_throw_ability.gd" id="10_mvq3v"]
+[ext_resource type="PackedScene" uid="uid://bdmxnn4qvcyvh" path="res://Scenes/rock.tscn" id="11_u8f5h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7)
@@ -147,7 +149,7 @@ animation = &"fall"
 
 [node name="Abilities" type="Node2D" parent="." node_paths=PackedStringArray("abilities")]
 script = ExtResource("5_rk41c")
-abilities = [NodePath("Ward"), NodePath("FishingPole")]
+abilities = [NodePath("Ward"), NodePath("FishingPole"), NodePath("RockThrow")]
 
 [node name="Ward" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("light")]
 script = ExtResource("6_6077u")
@@ -171,16 +173,16 @@ scale = Vector2(5, 5)
 texture = ExtResource("7_ui5tf")
 
 [node name="FishingPole" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("bobber", "line_render")]
+visible = false
 script = ExtResource("9_d0o1o")
 bobber = NodePath("Bobber")
 line_render = NodePath("LineRender")
 cast_strength = 10
 
 [node name="Bobber" type="RigidBody2D" parent="Abilities/FishingPole"]
-visible = false
+position = Vector2(5, -5)
 
 [node name="BobberCollider" type="CollisionShape2D" parent="Abilities/FishingPole/Bobber"]
-position = Vector2(5, -6)
 scale = Vector2(0.2, 0.2)
 shape = SubResource("CircleShape2D_mde4k")
 
@@ -188,6 +190,12 @@ shape = SubResource("CircleShape2D_mde4k")
 texture = ExtResource("7_ui5tf")
 
 [node name="LineRender" type="Line2D" parent="Abilities/FishingPole"]
-visible = false
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
+
+[node name="RockThrow" type="Node2D" parent="Abilities" node_paths=PackedStringArray("user")]
+visible = false
+script = ExtResource("10_mvq3v")
+rock_scene = ExtResource("11_u8f5h")
+throw_force = 50.0
+user = NodePath("../..")
