@@ -24,7 +24,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MapTools/plugin.cfg", "res://addons/ldtk-importer/plugin.cfg")
+enabled=PackedStringArray("res://addons/ldtk-importer/plugin.cfg")
 
 [input]
 

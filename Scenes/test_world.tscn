@@ -49,6 +49,30 @@ amount = 100
 process_material = SubResource("ParticleProcessMaterial_g25d7")
 lifetime = 6.0
 
+[node name="UI" type="Control" parent="Camera2D"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/UI"]
+layout_mode = 0
+offset_top = 180.0
+offset_right = 20.0
+offset_bottom = 200.0
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/UI/Panel"]
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+
 [node name="Ambient" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_2y5ce")
 autoplay = true

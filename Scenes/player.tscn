@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://3sy1jmwarmdo"]
+[gd_scene load_steps=29 format=3 uid="uid://3sy1jmwarmdo"]
 
 [ext_resource type="Script" path="res://Scripts/Player/basic_player_movement.gd" id="1_2o3ow"]
 [ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/Abilities/fishing_pole_ability.gd" id="9_d0o1o"]
 [ext_resource type="Script" path="res://Scripts/Player/Abilities/rock_throw_ability.gd" id="10_mvq3v"]
 [ext_resource type="PackedScene" uid="uid://bdmxnn4qvcyvh" path="res://Scenes/rock.tscn" id="11_u8f5h"]
+[ext_resource type="AudioStream" uid="uid://h5qbet08d72m" path="res://Audio/SFX/throw.wav" id="12_l7i6e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7)
@@ -149,7 +150,7 @@ animation = &"fall"
 
 [node name="Abilities" type="Node2D" parent="." node_paths=PackedStringArray("abilities")]
 script = ExtResource("5_rk41c")
-abilities = [NodePath("Ward"), NodePath("FishingPole"), NodePath("RockThrow")]
+abilities = [NodePath("Ward"), NodePath("RockThrow")]
 
 [node name="Ward" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("light")]
 script = ExtResource("6_6077u")
@@ -197,5 +198,6 @@ width = 1.0
 visible = false
 script = ExtResource("10_mvq3v")
 rock_scene = ExtResource("11_u8f5h")
-throw_force = 50.0
+throw_force = 400.0
+throw_sound = ExtResource("12_l7i6e")
 user = NodePath("../..")
