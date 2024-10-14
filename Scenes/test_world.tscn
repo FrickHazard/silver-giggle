@@ -50,7 +50,6 @@ process_material = SubResource("ParticleProcessMaterial_g25d7")
 lifetime = 6.0
 
 [node name="UI" type="Control" parent="Camera2D"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -76,11 +75,13 @@ offset_bottom = 20.0
 [node name="Ambient" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_2y5ce")
 autoplay = true
+attenuation = 0.01
 parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_4nreu")
 autoplay = true
+attenuation = 0.00728933
 parameters/looping = true
 
 [node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]

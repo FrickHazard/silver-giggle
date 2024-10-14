@@ -30,12 +30,12 @@ var was_on_floor := false
 
 func _ready():
 	audio_player_jump = AudioStreamPlayer2D.new()
-	audio_player_jump.volume_db = -20
+	audio_player_jump.volume_db = -10
 	audio_player_jump.stream = jump_sound
 	add_child(audio_player_jump)
 
 	audio_player_land = AudioStreamPlayer2D.new()
-	audio_player_land.volume_db = -20
+	audio_player_land.volume_db = -10
 	audio_player_land.stream = land_sound
 	add_child(audio_player_land)
 

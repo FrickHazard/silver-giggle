@@ -8,7 +8,7 @@ var audio_player_throw : AudioStreamPlayer2D
 
 func _ready():
 	audio_player_throw = AudioStreamPlayer2D.new()
-	audio_player_throw.volume_db = -20
+	audio_player_throw.volume_db = -10
 	audio_player_throw.stream = throw_sound
 	add_child(audio_player_throw)
 
