@@ -1,41 +1,176 @@
 [gd_scene load_steps=4 format=3 uid="uid://duuv0jmitprcq"]
 
-[ext_resource type="Material" uid="uid://cb356oxc0gvlu" path="res://WIP_Scenes/bug_segment.tres" id="1_pua22"]
-[ext_resource type="Script" path="res://WIP_Scenes/segment.gd" id="2_yo3l1"]
 [ext_resource type="Script" path="res://WIP_Scenes/Leg.gd" id="3_1kmad"]
+[ext_resource type="Script" path="res://WIP_Scenes/Segment.gd" id="4_8gklw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lk0lu"]
+size = Vector2(300, 100)
 
 [node name="Bug" type="Node2D"]
 
-[node name="Body" type="Polygon2D" parent="."]
-material = ExtResource("1_pua22")
-position = Vector2(-70, 0)
-color = Color(0.519891, 0.00835534, 0.15553, 1)
-polygon = PackedVector2Array(-35, -35, -25, -35, -15, -35, -5, -35, 5, -35, 15, -35, 25, -35, 35, -35, 35, 35, 25, 35, 15, 35, 5, 35, -5, 35, -15, 35, -25, 35, -35, 35)
-script = ExtResource("2_yo3l1")
+[node name="Target" type="Node2D" parent="."]
+position = Vector2(239, 60)
 
-[node name="Head" type="Polygon2D" parent="." node_paths=PackedStringArray("back_segment", "legs", "target")]
-material = ExtResource("1_pua22")
-color = Color(0.519891, 0.00835534, 0.15553, 1)
-polygon = PackedVector2Array(-35, -35, -25, -35, -15, -35, -5, -35, 5, -35, 15, -35, 25, -35, 35, -35, 35, 35, 25, 35, 15, 35, 5, 35, -5, 35, -15, 35, -25, 35, -35, 35)
-script = ExtResource("2_yo3l1")
-back_segment = NodePath("../Body")
-segment_type = 0
-legs = [NodePath("LeftLeg"), NodePath("RightLeg")]
-target = NodePath("../Target")
+[node name="Polygon2D" type="Polygon2D" parent="Target"]
+scale = Vector2(35, 35)
+color = Color(0.605013, 1, 0.371121, 1)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
 
-[node name="LeftLeg" type="Polygon2D" parent="Head"]
-rotation = -1.5708
-color = Color(0.070478, 0.21136, 0.24672, 1)
-polygon = PackedVector2Array(0, -5, 60, -5, 60, 5, 0, 5)
-script = ExtResource("3_1kmad")
+[node name="Bug" type="Node2D" parent="."]
 
-[node name="RightLeg" type="Polygon2D" parent="Head"]
+[node name="Segment1" type="RigidBody2D" parent="Bug" node_paths=PackedStringArray("target", "legs")]
+gravity_scale = 0.0
+script = ExtResource("4_8gklw")
+target = NodePath("../../Target")
+legs = [NodePath("CollisionShape2D/RightLeg"), NodePath("CollisionShape2D/LeftLeg"), NodePath("CollisionShape2D/LeftLeg2"), NodePath("CollisionShape2D/RightLeg2"), NodePath("CollisionShape2D/LeftLeg3"), NodePath("CollisionShape2D/RightLeg3")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bug/Segment1"]
+shape = SubResource("RectangleShape2D_lk0lu")
+
+[node name="LeftLeg" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(0, -50)
 rotation = 1.5708
-polygon = PackedVector2Array(0, -5, 60, -5, 60, 5, 0, 5)
+scale = Vector2(-1, 1)
+color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("3_1kmad")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg/Femur/Tibia"]
+position = Vector2(80, 0)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="RightLeg" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(0, 50)
+rotation = 1.5708
+script = ExtResource("3_1kmad")
+
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg/Femur/Tibia"]
+position = Vector2(80, 0.001)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="LeftLeg2" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(75, -50)
+rotation = 1.5708
+scale = Vector2(-1, 1)
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("3_1kmad")
+
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg2"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg2/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg2/Femur/Tibia"]
+position = Vector2(80, 0)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="RightLeg2" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(75, 50)
+rotation = 1.5708
+script = ExtResource("3_1kmad")
+
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg2"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg2/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg2/Femur/Tibia"]
+position = Vector2(80, 0.001)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="LeftLeg3" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(-75, -50)
+rotation = 1.5708
+scale = Vector2(-1, 1)
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("3_1kmad")
+
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg3"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg3/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/LeftLeg3/Femur/Tibia"]
+position = Vector2(80, 0)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="RightLeg3" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D"]
+position = Vector2(-75, 50)
+rotation = 1.5708
+script = ExtResource("3_1kmad")
+
+[node name="Femur" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg3"]
+color = Color(0.0352941, 1, 1, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 100, 5, 100, -5)
+
+[node name="Tibia" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg3/Femur"]
+position = Vector2(100, 0)
+color = Color(1, 1, 0.0745098, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 80, 5, 80, -5)
+
+[node name="Hand" type="Polygon2D" parent="Bug/Segment1/CollisionShape2D/RightLeg3/Femur/Tibia"]
+position = Vector2(80, 0.001)
+color = Color(0.258824, 1, 0.176471, 1)
+polygon = PackedVector2Array(0, -5, 0, 5, 20, 5, 20, -5)
+
+[node name="Camera2D" type="Camera2D" parent="Bug/Segment1"]
 position = Vector2(65, 0)
 
-[node name="Target" type="Node2D" parent="."]
-position = Vector2(377, -74)
+[node name="BodyVisual" type="Polygon2D" parent="Bug/Segment1"]
+scale = Vector2(15, 5)
+color = Color(0.55, 0.1375, 0.15125, 1)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="LeftEye" type="Polygon2D" parent="Bug/Segment1"]
+position = Vector2(124, -22)
+color = Color(0.301872, 0.000538679, 0.817471, 1)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="RightEYe" type="Polygon2D" parent="Bug/Segment1"]
+position = Vector2(124, 24)
+color = Color(0.301872, 0.000538679, 0.817471, 1)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="Mouth" type="Polygon2D" parent="Bug/Segment1"]
+position = Vector2(150, -1)
+scale = Vector2(0.5, 3)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="joint_1_to_2" type="PinJoint2D" parent="."]
+node_a = NodePath("../Bug/Segment1")
+
+[node name="joint_2_to_3" type="PinJoint2D" parent="."]
