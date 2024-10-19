@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-const float speed = 0.33333;
+uniform float speed = 0.33333;
 
 uint hash(uvec2 x, uint seed){
     const uint m = 0x5bd1e995U;

@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbucqrvpmkrsf"]
+
+[ext_resource type="Script" path="res://Scripts/audio_slider_settings.gd" id="1_mradn"]
+[ext_resource type="AudioStream" uid="uid://ckmbns88djwre" path="res://Audio/Ambient/static-noise-194184.mp3" id="2_n3eju"]
+
+[node name="Audio_Slider_Settings" type="Control"]
+layout_mode = 3
+anchor_right = 3.85
+anchor_bottom = 1.065
+offset_right = -570.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mradn")
+bus_name = "Music"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 38.0
+offset_right = 991.0
+offset_bottom = 83.0
+scale = Vector2(0.206261, 0.304843)
+theme_override_constants/separation = 42
+
+[node name="Audio_Name_Label" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Master Volume"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.001
+
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Audio_Num_label" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "99.2"
+
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_n3eju")
+volume_db = 0.937
+autoplay = true
+bus = &"Music"
+
+[node name="Back" type="Button" parent="."]
+text = "Back"
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

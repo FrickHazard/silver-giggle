@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3nq01354gmem"]
+
+[ext_resource type="Script" path="res://Scripts/options_menu.gd" id="1_pt7ro"]
+[ext_resource type="AudioStream" uid="uid://ckmbns88djwre" path="res://Audio/Ambient/static-noise-194184.mp3" id="2_7vako"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 54.0
+offset_right = -65.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pt7ro")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 75.0
+offset_bottom = 71.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Volume" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Volume"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Volume"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Volume/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Volume/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7vako")
+volume_db = 0.937
+autoplay = true
+bus = &"Music"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Volume" to="." method="_on_volume_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

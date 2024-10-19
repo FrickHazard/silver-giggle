@@ -1,0 +1,203 @@
+[gd_scene load_steps=29 format=3 uid="uid://3sy1jmwarmdo"]
+
+[ext_resource type="Script" path="res://Scripts/Player/basic_player_movement.gd" id="1_2o3ow"]
+[ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
+[ext_resource type="AudioStream" uid="uid://c48ln8lm15fed" path="res://Audio/SFX/land.wav" id="3_e2cyx"]
+[ext_resource type="Texture2D" uid="uid://dyr2762cu3xem" path="res://Assets/Sprites/player_sprite_sheet.png" id="4_oplji"]
+[ext_resource type="Script" path="res://Scripts/Player/player_abilities.gd" id="5_rk41c"]
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/ward_ability.gd" id="6_6077u"]
+[ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="7_ui5tf"]
+[ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="8_jc5pr"]
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/fishing_pole_ability.gd" id="9_d0o1o"]
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/rock_throw_ability.gd" id="10_mvq3v"]
+[ext_resource type="PackedScene" uid="uid://bdmxnn4qvcyvh" path="res://Scenes/rock.tscn" id="11_u8f5h"]
+[ext_resource type="AudioStream" uid="uid://h5qbet08d72m" path="res://Audio/SFX/throw.wav" id="12_l7i6e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
+size = Vector2(7, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b5bus"]
+atlas = ExtResource("4_oplji")
+region = Rect2(0, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4uldm"]
+atlas = ExtResource("4_oplji")
+region = Rect2(8, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ae6s"]
+atlas = ExtResource("4_oplji")
+region = Rect2(16, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3kw1"]
+atlas = ExtResource("4_oplji")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2o5tt"]
+atlas = ExtResource("4_oplji")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkp4k"]
+atlas = ExtResource("4_oplji")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8c120"]
+atlas = ExtResource("4_oplji")
+region = Rect2(0, 16, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nt4pu"]
+atlas = ExtResource("4_oplji")
+region = Rect2(8, 16, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxg12"]
+atlas = ExtResource("4_oplji")
+region = Rect2(16, 16, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lo52"]
+atlas = ExtResource("4_oplji")
+region = Rect2(0, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0cbs"]
+atlas = ExtResource("4_oplji")
+region = Rect2(8, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_egivq"]
+atlas = ExtResource("4_oplji")
+region = Rect2(16, 8, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_im0qd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b5bus")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4uldm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ae6s")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3kw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2o5tt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkp4k")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8c120")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nt4pu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxg12")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lo52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x0cbs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_egivq")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bgm1l"]
+shader = ExtResource("8_jc5pr")
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(0, 0, 0, 1)
+shader_parameter/threshold = 0.24
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mde4k"]
+radius = 7.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite")]
+position = Vector2(45, 121)
+script = ExtResource("1_2o3ow")
+max_speed = 80.0
+jump_cut_off = 0.0
+jump_sound = ExtResource("2_vw6gr")
+land_sound = ExtResource("3_e2cyx")
+animated_sprite = NodePath("Collider/Sprite")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xcm8o")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Collider"]
+sprite_frames = SubResource("SpriteFrames_im0qd")
+animation = &"fall"
+
+[node name="Abilities" type="Node2D" parent="." node_paths=PackedStringArray("abilities")]
+script = ExtResource("5_rk41c")
+abilities = [NodePath("Ward"), NodePath("RockThrow")]
+
+[node name="Ward" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("light")]
+script = ExtResource("6_6077u")
+light = NodePath("Effect")
+
+[node name="Effect" type="Node2D" parent="Abilities/Ward"]
+visible = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Abilities/Ward/Effect"]
+stream = ExtResource("3_e2cyx")
+pitch_scale = 1.55
+autoplay = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Abilities/Ward/Effect"]
+texture = ExtResource("7_ui5tf")
+texture_scale = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Abilities/Ward/Effect"]
+material = SubResource("ShaderMaterial_bgm1l")
+scale = Vector2(5, 5)
+texture = ExtResource("7_ui5tf")
+
+[node name="FishingPole" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("bobber", "line_render")]
+visible = false
+script = ExtResource("9_d0o1o")
+bobber = NodePath("Bobber")
+line_render = NodePath("LineRender")
+cast_strength = 10
+
+[node name="Bobber" type="RigidBody2D" parent="Abilities/FishingPole"]
+position = Vector2(5, -5)
+
+[node name="BobberCollider" type="CollisionShape2D" parent="Abilities/FishingPole/Bobber"]
+scale = Vector2(0.2, 0.2)
+shape = SubResource("CircleShape2D_mde4k")
+
+[node name="BobberVisual" type="Sprite2D" parent="Abilities/FishingPole/Bobber/BobberCollider"]
+texture = ExtResource("7_ui5tf")
+
+[node name="LineRender" type="Line2D" parent="Abilities/FishingPole"]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 1.0
+
+[node name="RockThrow" type="Node2D" parent="Abilities" node_paths=PackedStringArray("user")]
+visible = false
+script = ExtResource("10_mvq3v")
+rock_scene = ExtResource("11_u8f5h")
+throw_force = 400.0
+throw_sound = ExtResource("12_l7i6e")
+user = NodePath("../..")

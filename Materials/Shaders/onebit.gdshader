@@ -9,9 +9,9 @@ uniform float threshold : hint_range(0.0, 1.0) = 0.5;
 void fragment() {
     vec4 texture_color = texture(screen_texture, SCREEN_UV);
 
-	if(texture_color.a == 0.0)
+	if(texture_color.a < 0.5)
 	{
-		COLOR = vec4(0,0,0,0);
+		COLOR = vec4(0,0,0,1);
 	}
 	else {
 	    float luminance = dot(texture_color.rgb, vec3(0.299, 0.587, 0.114));

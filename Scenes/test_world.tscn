@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://baaqdc7p2hdfj"]
+
+[ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
+[ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
+[ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
+[ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
+[ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(100, 100, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 0, 0)
+gravity = Vector3(-100, 100, 0)
+turbulence_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_71laa"]
+script/source = "extends CanvasLayer
+
+@export var target : Node2D
+
+func _process(delta: float) -> void:
+	#position = camera_global.position
+	pass
+"
+
+[node name="TestWorld" type="Node2D"]
+
+[node name="Levels" parent="." instance=ExtResource("1_fo8sa")]
+
+[node name="Player" parent="." instance=ExtResource("2_7e27q")]
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(100, 100)
+script = ExtResource("4_r2730")
+player = NodePath("../Player")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Camera2D"]
+position = Vector2(18, -30)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_g25d7")
+lifetime = 6.0
+
+[node name="UI" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/UI"]
+layout_mode = 0
+offset_top = 180.0
+offset_right = 20.0
+offset_bottom = 200.0
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/UI/Panel"]
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="Ambient" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_2y5ce")
+autoplay = true
+attenuation = 0.01
+parameters/looping = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_4nreu")
+autoplay = true
+attenuation = 0.00728933
+parameters/looping = true
+
+[node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
+script = SubResource("GDScript_71laa")
+target = NodePath("../Camera2D")

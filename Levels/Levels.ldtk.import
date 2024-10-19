@@ -7,10 +7,10 @@ path="res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn"
 
 [deps]
 
-files=["res://Levels/tilesets/tileset_8px.res", "res://Levels/levels/Level_0.scn", "res://Levels/levels/Level_1.scn", "res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn"]
+files=["res://Levels/tilesets/tileset_8px.res", "res://Levels/levels/Level_0.scn", "res://Levels/levels/Level_1.scn", "res://Levels/levels/Level_2.scn", "res://Levels/levels/Level_3.scn", "res://Levels/levels/Level_4.scn", "res://Levels/levels/Level_5.scn", "res://Levels/levels/Level_6.scn", "res://Levels/levels/Level_7.scn", "res://Levels/levels/Level_8.scn", "res://Levels/levels/Level_9.scn", "res://Levels/levels/Level_10.scn", "res://Levels/levels/Level_11.scn", "res://Levels/levels/Level_12.scn", "res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn"]
 
 source_file="res://Levels/Levels.ldtk"
-dest_files=["res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn", "res://Levels/tilesets/tileset_8px.res", "res://Levels/levels/Level_0.scn", "res://Levels/levels/Level_1.scn", "res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn"]
+dest_files=["res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn", "res://Levels/tilesets/tileset_8px.res", "res://Levels/levels/Level_0.scn", "res://Levels/levels/Level_1.scn", "res://Levels/levels/Level_2.scn", "res://Levels/levels/Level_3.scn", "res://Levels/levels/Level_4.scn", "res://Levels/levels/Level_5.scn", "res://Levels/levels/Level_6.scn", "res://Levels/levels/Level_7.scn", "res://Levels/levels/Level_8.scn", "res://Levels/levels/Level_9.scn", "res://Levels/levels/Level_10.scn", "res://Levels/levels/Level_11.scn", "res://Levels/levels/Level_12.scn", "res://.godot/imported/Levels.ldtk-546c6804eb4d08a9a4c9b4bafccdb644.scn"]
 
 [params]
 
@@ -33,5 +33,5 @@ entities_post_import="res://addons/ldtk-importer/post-import/entity-template.gd"
 level_post_import="res://addons/ldtk-importer/post-import/level-template.gd"
 world_post_import="res://addons/ldtk-importer/post-import/world-template.gd"
 Debug=""
-force_tileset_reimport=false
+force_tileset_reimport=true
 verbose_output=false

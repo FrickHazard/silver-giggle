@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://bcbar6lbn03dd"]
+
+[ext_resource type="Shader" path="res://Materials/Shaders/node_2d.gdshader" id="1_78f6x"]
+[ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="2_kgidd"]
+[ext_resource type="Shader" path="res://Materials/Shaders/crt.gdshader" id="3_k1bdy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c43tw"]
+shader = ExtResource("1_78f6x")
+shader_parameter/speed = 0.33333
+shader_parameter/global_transform = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xka1r"]
+shader = ExtResource("2_kgidd")
+shader_parameter/color1 = Color(0.97, 1, 0.9, 1)
+shader_parameter/color2 = Color(0.02272, 0.0216, 0.03, 1)
+shader_parameter/threshold = 0.15
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygdqc"]
+shader = ExtResource("3_k1bdy")
+shader_parameter/resolution = Vector2(200, 200)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.5
+shader_parameter/noise_amount = 0.01
+shader_parameter/grille_amount = 0.2
+shader_parameter/grille_size = 2.0
+shader_parameter/vignette_amount = 0.6
+shader_parameter/vignette_intensity = 0.5
+shader_parameter/aberation_amount = 0.1
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -4.0
+
+[node name="PostProcessing" type="CanvasLayer"]
+
+[node name="Fog_Layer" type="CanvasLayer" parent="."]
+
+[node name="Fog_ColorRect" type="ColorRect" parent="Fog_Layer"]
+modulate = Color(0, 0, 0, 0.937255)
+self_modulate = Color(0, 0, 0, 0.411765)
+material = SubResource("ShaderMaterial_c43tw")
+offset_right = 200.0
+offset_bottom = 200.0
+mouse_filter = 2
+
+[node name="OneBit_Layer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="OneBit_ColorRect" type="ColorRect" parent="OneBit_Layer"]
+material = SubResource("ShaderMaterial_xka1r")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CRT_Layer" type="CanvasLayer" parent="."]
+
+[node name="CRT_ColorRect" type="ColorRect" parent="CRT_Layer"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_ygdqc")
+offset_right = 200.0
+offset_bottom = 200.0
+mouse_filter = 2

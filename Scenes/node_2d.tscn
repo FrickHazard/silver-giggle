@@ -1,13 +1,14 @@
 [gd_scene load_steps=9 format=4 uid="uid://cbyir0um21nf2"]
 
 [ext_resource type="Script" path="res://Scenes/node_2d.gd" id="1_2iaxm"]
-[ext_resource type="Shader" path="res://Materials/node_2d.gdshader" id="1_mmmhf"]
+[ext_resource type="Shader" path="res://Materials/Shaders/node_2d.gdshader" id="1_mmmhf"]
 [ext_resource type="Texture2D" uid="uid://vqgqewli6w0y" path="res://Assets/Sprites/PathAndObjects.png" id="2_56m4p"]
 [ext_resource type="Texture2D" uid="uid://dqd068o54d3gq" path="res://icon.svg" id="3_q7eh6"]
 [ext_resource type="PackedScene" uid="uid://ba2i5j5j1ge3r" path="res://wardp_3d.tscn" id="4_ha4sc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4xpuk"]
 shader = ExtResource("1_mmmhf")
+shader_parameter/speed = 0.33333
 shader_parameter/global_transform = null
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gqn5m"]
