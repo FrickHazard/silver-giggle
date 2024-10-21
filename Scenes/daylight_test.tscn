@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://ss00lpd7ak32"]
+
+[ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_dxts5"]
+[ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_och0c"]
+[ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="3_8rxw4"]
+[ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="4_kjfg5"]
+[ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="5_ghvul"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="6_3em11"]
+[ext_resource type="Script" path="res://Scripts/daylight_cycle.gd" id="7_suiqd"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(100, 100, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 0, 0)
+gravity = Vector3(-100, 100, 0)
+turbulence_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_71laa"]
+script/source = "extends CanvasLayer
+
+@export var target : Node2D
+
+func _process(delta: float) -> void:
+	#position = camera_global.position
+	pass
+"
+
+[node name="TestWorld" type="Node2D"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="Levels" parent="." instance=ExtResource("1_dxts5")]
+
+[node name="Player" parent="." instance=ExtResource("2_och0c")]
+position = Vector2(325, -112)
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(100, 100)
+script = ExtResource("3_8rxw4")
+player = NodePath("../Player")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Camera2D"]
+position = Vector2(18, -30)
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_g25d7")
+lifetime = 6.0
+
+[node name="Ambient" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_kjfg5")
+autoplay = true
+attenuation = 0.01
+parameters/looping = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_ghvul")
+autoplay = true
+attenuation = 0.00728933
+parameters/looping = true
+
+[node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_3em11")]
+script = SubResource("GDScript_71laa")
+target = NodePath("../Camera2D")
+
+[node name="DaylightManager" type="Node2D" parent="." node_paths=PackedStringArray("light_node")]
+script = ExtResource("7_suiqd")
+light_node = NodePath("DirectionalLight2D")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="DaylightManager"]
+energy = 0.0
