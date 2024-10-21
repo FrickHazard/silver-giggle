@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cb356oxc0gvlu"]
 
-[ext_resource type="Shader" path="res://WIP_Scenes/bug_segment.gdshader" id="1_htj87"]
+[ext_resource type="Shader" path="res://BugWork/bug_segment.gdshader" id="1_htj87"]
 
 [resource]
 resource_local_to_scene = true
