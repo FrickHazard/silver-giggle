@@ -112,7 +112,7 @@ func handle_animation() -> void:
 	else:
 		animated_sprite.play(idle_animation)
 
-	if velocity.x >= 0.0:
+	if velocity.x > 0.0:
 		animated_sprite.flip_h = false
-	else:
+	elif velocity.x < 0.0:
 		animated_sprite.flip_h = true
