@@ -45,6 +45,7 @@ player = NodePath("../Player")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Camera2D"]
 position = Vector2(18, -30)
+emitting = false
 amount = 100
 process_material = SubResource("ParticleProcessMaterial_g25d7")
 lifetime = 6.0

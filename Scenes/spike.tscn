@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://cb3rvqrr775dv"]
+
+[ext_resource type="Texture2D" uid="uid://dcww56mves0e6" path="res://Assets/Sprites/16-bit-spike-Sheet.png" id="1_brgcy"]
+[ext_resource type="PackedScene" uid="uid://ua6vjki4pn75" path="res://Scenes/Killzone.tscn" id="1_gs2hn"]
+
+[sub_resource type="GDScript" id="GDScript_7sw6c"]
+script/source = "extends Sprite2D
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fac2s"]
+radius = 6.0
+height = 12.0
+
+[node name="Spike" type="Sprite2D"]
+texture = ExtResource("1_brgcy")
+hframes = 4
+script = SubResource("GDScript_7sw6c")
+
+[node name="Killzone" parent="." instance=ExtResource("1_gs2hn")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_fac2s")
