@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://ss00lpd7ak32"]
+[gd_scene load_steps=11 format=3 uid="uid://ss00lpd7ak32"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_dxts5"]
+[ext_resource type="Script" path="res://Scripts/daylight_response_test.gd" id="1_hohus"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_och0c"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="3_8rxw4"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="4_kjfg5"]
@@ -37,6 +38,7 @@ func _process(delta: float) -> void:
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
+script = ExtResource("1_hohus")
 
 [node name="Levels" parent="." instance=ExtResource("1_dxts5")]
 
@@ -73,6 +75,7 @@ target = NodePath("../Camera2D")
 
 [node name="DaylightManager" type="Node2D" parent="." node_paths=PackedStringArray("light_node")]
 script = ExtResource("7_suiqd")
+default_start_time = 0.15
 light_node = NodePath("DirectionalLight2D")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="DaylightManager"]
