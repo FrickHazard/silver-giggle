@@ -153,6 +153,7 @@ script = ExtResource("5_rk41c")
 abilities = [NodePath("Ward"), NodePath("RockThrow")]
 
 [node name="Ward" type="Sprite2D" parent="Abilities" node_paths=PackedStringArray("light")]
+visible = false
 script = ExtResource("6_6077u")
 light = NodePath("Effect")
 
