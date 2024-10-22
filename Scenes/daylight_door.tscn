@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://blnhcn8jno2d2"]
+
+[ext_resource type="Script" path="res://Scripts/daylight_door.gd" id="1_3w43b"]
+[ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="2_177a2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4w7hs"]
+
+[node name="DaylightDoor" type="StaticBody2D" node_paths=PackedStringArray("door_collider", "door_visual")]
+script = ExtResource("1_3w43b")
+close_trigger = 3
+door_collider = NodePath("Collider")
+door_visual = NodePath("Collider/Visual")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4w7hs")
+
+[node name="Visual" type="Sprite2D" parent="Collider"]
+texture = ExtResource("2_177a2")
