@@ -11,19 +11,19 @@ func _ready():
 
 func _on_day_state_changed(new_state):
 	if new_state == open_trigger:
-		open_door()
+		_open_door()
 	elif new_state == close_trigger:
-		close_door()
+		_close_door()
 	pass
 	
-func open_door():
+func _open_door():
 	door_collider.disabled = true
 	door_visual.visible = false
 	#play noise
 	#play animation
 	pass
 	
-func close_door():
+func _close_door():
 	door_collider.disabled = false
 	door_visual.visible = true
 	#play noise
