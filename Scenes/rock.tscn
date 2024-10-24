@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdmxnn4qvcyvh"]
 
-[ext_resource type="Script" path="res://Scripts/Player/Abilities/rock.gd" id="1_engde"]
+[ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_2s2mc"]
 [ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="1_fimsg"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yepaj"]
@@ -14,8 +14,9 @@ radius = 1.0
 mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_yepaj")
 continuous_cd = 1
-script = ExtResource("1_engde")
-lifespan = 2.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_2s2mc")
 
 [node name="RockCollider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tgsmb")

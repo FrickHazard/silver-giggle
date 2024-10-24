@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
-[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/Utility/post_processing.tscn" id="2_85jws"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
 [ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]

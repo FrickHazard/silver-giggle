@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://3sy1jmwarmdo"]
+[gd_scene load_steps=30 format=3 uid="uid://3sy1jmwarmdo"]
 
 [ext_resource type="Script" path="res://Scripts/Player/basic_player_movement.gd" id="1_2o3ow"]
 [ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
@@ -142,6 +142,25 @@ shader_parameter/color1 = Color(1, 1, 1, 1)
 shader_parameter/color2 = Color(0, 0, 0, 1)
 shader_parameter/threshold = 0.24
 
+[sub_resource type="Curve" id="Curve_gw0ca"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.90708, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_vekrr"]
+curve = SubResource("Curve_gw0ca")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dxb7w"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 4, 0)
+emission_shape = 3
+emission_box_extents = Vector3(8, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 108.26
+initial_velocity_max = 108.26
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("CurveTexture_vekrr")
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite")]
 position = Vector2(45, 121)
 script = ExtResource("1_2o3ow")
@@ -190,3 +209,9 @@ rock_scene = ExtResource("11_u8f5h")
 throw_force = 400.0
 throw_sound = ExtResource("12_l7i6e")
 user = NodePath("../..")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_dxb7w")
+lifetime = 0.5
+one_shot = true

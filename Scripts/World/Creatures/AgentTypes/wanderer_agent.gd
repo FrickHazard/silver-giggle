@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 
 func _wander():
 	velocity.x = direction * move_speed
-	if wall_check.is_colliding():
+	if wall_check.is_colliding() && is_on_floor():
 		if jump_attempts > 5:
 			direction = -direction
 			jump_attempts = 0 

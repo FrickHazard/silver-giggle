@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://df56fefe6hqro"]
+[gd_scene load_steps=22 format=3 uid="uid://df56fefe6hqro"]
 
-[ext_resource type="Script" path="res://Scripts/Creatures/AgentTypes/wanderer_agent.gd" id="1_c3qlt"]
+[ext_resource type="Script" path="res://Scripts/World/Creatures/AgentTypes/wanderer_agent.gd" id="1_c3qlt"]
+[ext_resource type="Script" path="res://Scripts/World/Creatures/damagable.gd" id="3_yce3j"]
 [ext_resource type="Texture2D" uid="uid://b862vn2icvpnd" path="res://Assets/Sprites/frog_player_spritesheet.png" id="4_lb5yq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
@@ -161,7 +162,7 @@ animations = [{
 position = Vector2(45, 121)
 script = ExtResource("1_c3qlt")
 move_speed = 20.0
-jump_force = 100.0
+jump_force = 120.0
 gravity = 500.0
 sleep_time = 3
 ground_check = NodePath("GroundCheck")
@@ -177,6 +178,10 @@ hit_from_inside = true
 position = Vector2(3, 0)
 target_position = Vector2(-10, 0)
 hit_from_inside = true
+
+[node name="Damagable" type="Node2D" parent="."]
+script = ExtResource("3_yce3j")
+max_hp = 3
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.25)

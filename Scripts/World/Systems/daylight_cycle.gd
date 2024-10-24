@@ -4,6 +4,8 @@ extends Node
 @export var default_start_time: float = 0.2
 var current_time_of_day: float = 0.0  
 
+var current_day : int = 1
+
 @export var time_mult: float = 1.0
 
 @export var light_node : Light2D  
@@ -27,6 +29,7 @@ func update_time_of_day(delta):
 	current_time_of_day += (delta / day_length_in_seconds) * time_mult
 	if current_time_of_day >= 1.0:
 		current_time_of_day = 0.0  
+		current_day += 1
 
 func adjust_lighting():
 	if current_time_of_day <= sunrise_time:
