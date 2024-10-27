@@ -10,6 +10,7 @@ extends CharacterBody2D
 var jump_cooldown: float = 0.5
 var direction: int
 var can_jump: bool = true
+var was_on_floor : bool = false
 
 @export_category("Preferences")
 @export var wake_time : SignalBus.DaylightState 
@@ -19,6 +20,12 @@ var can_jump: bool = true
 @export var ground_check: RayCast2D
 @export var wall_check: RayCast2D
 @export var visual : AnimatedSprite2D
+@export var sound_player : AudioStreamPlayer2D
+@export var pathfinding : NavigationAgent2D
+
+@export_category("Sounds")
+@export var jump_sound : AudioStream
+@export var land_sound : AudioStream
 
 enum State { ACTIVE, RESTING }
 var current_state: State = State.ACTIVE
@@ -34,6 +41,7 @@ func _on_day_state_changed(new_state):
 
 func _process(_delta):
 	_update_sprite()
+	check_landing()
 	pass
 	
 func _physics_process(delta):
@@ -47,6 +55,12 @@ func _update_wall_check():
 		wall_check.target_position.x = -12
 	else:
 		wall_check.target_position.x = 4
+		
+func check_landing() -> void:
+	if is_on_floor() and not was_on_floor:
+		sound_player.stream = land_sound
+		sound_player.play()
+	was_on_floor = is_on_floor()
 	
 func _update_sprite():
 	if(velocity.x > 0):
@@ -74,7 +88,22 @@ func _jump():
 	if !can_jump or !ground_check.is_colliding():
 		return
 	
+	sound_player.stream = jump_sound
+	sound_player.play()
+	
 	velocity.y = -jump_force
 	can_jump = false
 	await get_tree().create_timer(jump_cooldown).timeout
 	can_jump = true
+
+func _follow_path():
+	if pathfinding.distance_to_target() < 30:
+		velocity.x = 0
+		return
+
+	if(pathfinding.target_position.x < position.x):
+		velocity.x = -1 * move_speed
+	else:
+		velocity.x = 1 * move_speed
+	if(pathfinding.target_position.y < position.x):
+		_jump()

@@ -35,5 +35,3 @@ func use(input_direction: Vector2):
 		rock_instance.position = spawn_position
 		get_tree().root.add_child(rock_instance)
 		rock_instance.apply_central_impulse(input_direction * throw_force)
-	else:
-		print("Cannot throw the rock here! It's blocked by a wall or object.")

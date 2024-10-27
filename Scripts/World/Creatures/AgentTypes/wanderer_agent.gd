@@ -4,6 +4,8 @@ var jump_attempts: int
 var jump_timer: Timer
 var direction_timer: Timer
 
+var wander_position : Vector2
+
 func _ready() -> void:
 	super._ready()
 	if randi_range(1, 3) == 1:
