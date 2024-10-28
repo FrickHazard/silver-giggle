@@ -92,6 +92,7 @@ func _jump():
 	sound_player.play()
 	
 	velocity.y = -jump_force
+	
 	can_jump = false
 	await get_tree().create_timer(jump_cooldown).timeout
 	can_jump = true
@@ -101,9 +102,18 @@ func _follow_path():
 		velocity.x = 0
 		return
 
-	if(pathfinding.target_position.x < position.x):
-		velocity.x = -1 * move_speed
+	var next_position = pathfinding.get_next_path_position()
+	
+	var jump_mult : float = 1
+	if is_on_floor():
+		jump_mult = 1
 	else:
-		velocity.x = 1 * move_speed
-	if(pathfinding.target_position.y < position.x):
+		jump_mult = 1.2
+	
+	if(next_position.x < position.x):
+		velocity.x = -1 * move_speed * jump_mult
+	else:
+		velocity.x = 1 * move_speed * jump_mult
+
+	if next_position.y < position.x && abs(next_position.x-position.x) < 5:
 		_jump()

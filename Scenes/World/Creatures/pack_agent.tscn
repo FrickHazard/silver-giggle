@@ -1,7 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://d2musgnwt0dj0"]
+[gd_scene load_steps=23 format=3 uid="uid://d2musgnwt0dj0"]
 
 [ext_resource type="Script" path="res://Scripts/World/Creatures/AgentTypes/pack_agent.gd" id="1_lt6fu"]
 [ext_resource type="Texture2D" uid="uid://b862vn2icvpnd" path="res://Assets/Sprites/frog_player_spritesheet.png" id="2_gb651"]
+[ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_jhagl"]
+[ext_resource type="AudioStream" uid="uid://c48ln8lm15fed" path="res://Audio/SFX/land.wav" id="3_uqdo5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7.5)
@@ -161,7 +163,7 @@ animations = [{
 position = Vector2(45, 121)
 script = ExtResource("1_lt6fu")
 move_speed = 20.0
-jump_force = 100.0
+jump_force = 130.0
 gravity = 500.0
 sleep_time = 3
 ground_check = NodePath("GroundCheck")
@@ -169,6 +171,8 @@ wall_check = NodePath("WallCheck")
 visual = NodePath("Collider/Visual")
 sound_player = NodePath("AudioStreamPlayer2D")
 pathfinding = NodePath("NavigationAgent2D")
+jump_sound = ExtResource("2_jhagl")
+land_sound = ExtResource("3_uqdo5")
 
 [node name="GroundCheck" type="RayCast2D" parent="."]
 position = Vector2(0, 4)
@@ -191,9 +195,10 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 20.0
+path_postprocessing = 1
+path_metadata_flags = 0
 simplify_path = true
-avoidance_enabled = true
+simplify_epsilon = 1.0
 debug_enabled = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

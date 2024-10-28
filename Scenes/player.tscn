@@ -198,6 +198,7 @@ texture = ExtResource("7_ui5tf")
 texture_scale = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Abilities/Ward/Effect"]
+top_level = true
 material = SubResource("ShaderMaterial_bgm1l")
 scale = Vector2(5, 5)
 texture = ExtResource("7_ui5tf")
