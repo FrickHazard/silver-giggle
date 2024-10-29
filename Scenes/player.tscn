@@ -1,15 +1,20 @@
-[gd_scene load_steps=30 format=3 uid="uid://3sy1jmwarmdo"]
+[gd_scene load_steps=32 format=3 uid="uid://3sy1jmwarmdo"]
 
 [ext_resource type="Script" path="res://Scripts/Player/basic_player_movement.gd" id="1_2o3ow"]
 [ext_resource type="AudioStream" uid="uid://dgakhhn3utlo0" path="res://Audio/SFX/jump.wav" id="2_vw6gr"]
 [ext_resource type="AudioStream" uid="uid://c48ln8lm15fed" path="res://Audio/SFX/land.wav" id="3_e2cyx"]
 [ext_resource type="Script" path="res://Scripts/Player/player_abilities.gd" id="5_rk41c"]
 [ext_resource type="Script" path="res://Scripts/Player/Abilities/ward_ability.gd" id="6_6077u"]
-[ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="7_ui5tf"]
+[ext_resource type="Script" path="res://Scripts/World/Decorative/animated_light.gd" id="7_u6oj5"]
+[ext_resource type="Texture2D" uid="uid://bo32hdwjsmgox" path="res://Assets/Light.png" id="8_deobj"]
 [ext_resource type="Shader" path="res://Materials/Shaders/onebit.gdshader" id="8_jc5pr"]
 [ext_resource type="Script" path="res://Scripts/Player/Abilities/rock_throw_ability.gd" id="10_mvq3v"]
 [ext_resource type="PackedScene" uid="uid://bdmxnn4qvcyvh" path="res://Scenes/rock.tscn" id="11_u8f5h"]
 [ext_resource type="AudioStream" uid="uid://h5qbet08d72m" path="res://Audio/SFX/throw.wav" id="12_l7i6e"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_1pcth"]
+cull_mode = 1
+polygon = PackedVector2Array(-4, 3, 4, 3, 4, 4, -4, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcm8o"]
 size = Vector2(7, 7)
@@ -170,6 +175,10 @@ jump_sound = ExtResource("2_vw6gr")
 land_sound = ExtResource("3_e2cyx")
 animated_sprite = NodePath("Collider/Sprite")
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2(0, 1)
+occluder = SubResource("OccluderPolygon2D_1pcth")
+
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xcm8o")
 
@@ -194,14 +203,17 @@ pitch_scale = 1.55
 autoplay = true
 
 [node name="PointLight2D" type="PointLight2D" parent="Abilities/Ward/Effect"]
-texture = ExtResource("7_ui5tf")
-texture_scale = 5.0
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("8_deobj")
+texture_scale = 0.8
+script = ExtResource("7_u6oj5")
 
 [node name="Sprite2D" type="Sprite2D" parent="Abilities/Ward/Effect"]
+visible = false
 top_level = true
 material = SubResource("ShaderMaterial_bgm1l")
-scale = Vector2(5, 5)
-texture = ExtResource("7_ui5tf")
+texture = ExtResource("8_deobj")
 
 [node name="RockThrow" type="Node2D" parent="Abilities" node_paths=PackedStringArray("user")]
 visible = false
