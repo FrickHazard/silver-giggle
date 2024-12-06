@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://daafqnftu8wp7"]
+
+[ext_resource type="Script" path="res://Scripts/water_body.gd" id="1_vhdr7"]
+[ext_resource type="Shader" path="res://test_world.gdshader" id="2_50uig"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xdayi"]
+shader = ExtResource("2_50uig")
+shader_parameter/tint = Vector4(1, 1, 1, 1)
+
+[node name="Water_Body" type="Node2D"]
+script = ExtResource("1_vhdr7")
+
+[node name="Water_Polygon" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_xdayi")
+color = Color(0.2598, 0.320979, 0.786371, 1)

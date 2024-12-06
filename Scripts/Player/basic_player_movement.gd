@@ -1,9 +1,12 @@
 extends CharacterBody2D
 
+class_name BasicPlayerMovement
+
 @export var move_speed := 50.0
 @export var acceleration := 1000.0
 @export var deceleration := 1500.0
 @export var max_speed := 100.0
+@export var motion = Vector2.ZERO
 
 @export var jump_force := 250.0
 @export var jump_cut_off := 100.0
@@ -27,6 +30,7 @@ var coyote_timer := 0.0
 var audio_player_jump: AudioStreamPlayer2D
 var audio_player_land: AudioStreamPlayer2D
 var was_on_floor := false
+var can_break_surface = true
 
 func _ready():
 	audio_player_jump = AudioStreamPlayer2D.new()
@@ -48,6 +52,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	check_landing()
 	handle_animation()
+	handle_water_splash()
 
 func handle_input(delta: float) -> void:
 	var input_dir := Vector2.ZERO
@@ -116,3 +121,10 @@ func handle_animation() -> void:
 		animated_sprite.flip_h = false
 	else:
 		animated_sprite.flip_h = true
+
+func handle_water_splash():
+	motion.y += gravity
+	motion.y = clamp(motion.y,-max_speed, max_speed)
+
+func initialize(pos):
+	global_position = pos

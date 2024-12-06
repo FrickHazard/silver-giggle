@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://baaqdc7p2hdfj"]
+[gd_scene load_steps=22 format=3 uid="uid://baaqdc7p2hdfj"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
 [ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]
+[ext_resource type="PackedScene" uid="uid://dx1vjptglxa4x" path="res://Scenes/small_bug.tscn" id="8_8ynhk"]
+[ext_resource type="PackedScene" uid="uid://daafqnftu8wp7" path="res://Scenes/water_body.tscn" id="9_b8i7u"]
+[ext_resource type="Texture2D" uid="uid://dwwjm6wbkvwr3" path="res://Assets/Worm_Bug_Piskel.png" id="10_ee77m"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0
@@ -31,6 +34,77 @@ func _process(delta: float) -> void:
 	#position = camera_global.position
 	pass
 "
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxr5g"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecfxa"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sboqt"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xntd6"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rg518"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rnljd"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibu4v"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6j0bh"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6sywg"]
+atlas = ExtResource("10_ee77m")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o80d7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxr5g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecfxa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sboqt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xntd6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rg518")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rnljd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibu4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6j0bh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6sywg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
 
 [node name="TestWorld" type="Node2D"]
 
@@ -88,3 +162,21 @@ parameters/looping = true
 [node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
 script = SubResource("GDScript_71laa")
 target = NodePath("../Camera2D")
+
+[node name="Small_Bug" parent="." instance=ExtResource("8_8ynhk")]
+position = Vector2(164, 157)
+
+[node name="Water_Body" parent="." instance=ExtResource("9_b8i7u")]
+position = Vector2(1033, 98)
+passes = 16
+distance_between_springs = 3
+spring_number = 60
+depth = 200
+
+[node name="Grub" parent="." instance=ExtResource("8_8ynhk")]
+position = Vector2(697, 250)
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_o80d7")
+animation = &"default"
+autoplay = "default"
+frame_progress = 0.386212
