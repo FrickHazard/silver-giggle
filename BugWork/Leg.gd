@@ -5,8 +5,8 @@ class_name SegmentLeg
 var EPS = 10
 
 # Joint constraints in radians
-@export var shoulder_min = deg_to_rad(-80.0) # fowrard angle limit
-@export var shoulder_max = deg_to_rad(50.0) # backward angle limit
+@export var shoulder_min = deg_to_rad(-60.0) # fowrard angle limit
+@export var shoulder_max = deg_to_rad(60.0) # backward angle limit
 
 @export var elbow_min = deg_to_rad(-100.0)   # fowrard angle limit
 @export var elbow_max = deg_to_rad(100.0)  # backward angle limit
@@ -14,29 +14,35 @@ var EPS = 10
 @export var shoulder_rotate_speed = 8
 @export var elbow_rotate_speed = 8
 
-@export var muscle_strength = 32
+@export var muscle_strength: float = 32.5
 
 var physics_fps = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
 var tick_count_for_release = 0
 @export var time_sec_before_release = 3
 
-var should_grab = false
 
+var should_grab = false
 # Target to reach (set this to a position in your scene)
 var target_pos = null
 var is_grabbing: bool = false
+var is_pushing: bool = false
 var grabbed_pos = null
 
 var draw_debug_info = false
 
-func stop_grabbing() -> void:
+func finish_push() -> void:
+	is_pushing = false
+
+func release_grip() -> void:
 	should_grab = false
 	is_grabbing = false
+	is_pushing = false
 	grabbed_pos = null
 	tick_count_for_release = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#Engine.time_scale = 0.1
 	pass # Replace with function body.
 	
 func draw_vector_head(start: Vector2, end: Vector2, arrow_size=10, arrow_width =5):
@@ -60,7 +66,7 @@ func draw_vector(start: Vector2, end: Vector2, color: Color = Color(1, 0, 0), wi
 
 var vecs_to_draw = []
 var circle_buf = []
-func _draw() ->void:
+func _draw() -> void:
 	if not draw_debug_info:
 		vecs_to_draw = []
 		circle_buf= []
@@ -109,51 +115,76 @@ func _process(delta):
 				tick_count_for_release = 0
 				is_grabbing = true
 				grabbed_pos = actual_target
-		else:
-			stop_grabbing()
+		elif is_grabbing:
+			pass
+			#finish_push()		
 			
 		# Leg is stretched out too far so there is no more force to be had		
 		if 	is_grabbing and get_muscle_strength_percent() < 0.05:
-			stop_grabbing()
+			finish_push()
+			is_grabbing = false
+			grabbed_pos = null
+			
+			
 			
 		# Time for this leg
 		if is_grabbing and tick_count_for_release >= physics_fps * time_sec_before_release:
-			stop_grabbing()
+			finish_push()
+			is_grabbing = false
+			grabbed_pos = null
+			
 							
 		if is_grabbing:
-			tick_count_for_release += 1
-			
-		$Femur/Tibia/Hand.color = Color(1, 0, 0) if is_grabbing else Color(0, 0, 1)
+			tick_count_for_release += 0
+
+		$Femur/Tibia/TibiaVisual.modulate = Color(0, 0, 30, 1) if is_pushing and is_grabbing else Color(30, 0, 0, 1) if is_grabbing else Color(1, 1, 1, 1)
+
+func absorb_force(force_at_joint: Vector2):
+	if not is_grabbing:
+		return Vector2(0, 0)
+	var k = 2
+	var l1 = (global_position -  $Femur/Tibia.global_position).length()
+	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
+	var rest_length = (l1 + l2) / 2
+	
+	var leg_vec = global_position - $Femur/Tibia/Hand.global_position
+	var current_length = leg_vec.length()
+	var dir = leg_vec.normalized()
+	
+	return -force_at_joint
+	#return k * (current_length - rest_length) * dir
+	
 
 # Calculate where to place leg for direction of movement
 func set_ik_leg_target_for_step(global_target: Vector2, is_counter_clockwise_turning: bool):
-	var forward = Vector2.DOWN.rotated(global_rotation)	
 	var leg_dir = Vector2.RIGHT.rotated(global_rotation)	
+	var leg_F_dir = (Vector2.UP * scale).rotated(global_rotation)	
 	
 	var tangent = (global_target - global_position).normalized()
 	var normal1 = Vector2(tangent.y, -tangent.x)
 	var normal2 = normal1 * -1
-	
 	var normal = normal1 if normal1.dot(leg_dir) > normal2.dot(leg_dir) else normal2
 	
-	var angle = leg_dir.angle_to_point(tangent)
-		
-	# var dot_in_dir_of_target = t.project(tangent).dot(tangent)	
-		
-	# We are unable to add force toward target so we put force into turning
-	#if dot_in_dir_of_target <= 0:
-		
-	if false and angle > shoulder_max or false and angle < shoulder_min:
-		if is_counter_clockwise_turning:
-			var turn_clockwise = leg_dir.rotated(shoulder_max)
-			target_pos = global_position + (turn_clockwise) * 30
-			vecs_to_draw.push_back([global_position, global_position + turn_clockwise * 64, Color(1,1,1), 4])
-		else:
-			var turn_clockwise = leg_dir.rotated(shoulder_min)
-			target_pos = global_position + (turn_clockwise) * 30
-			vecs_to_draw.push_back([global_position, global_position + turn_clockwise * 64, Color(1,1,1), 4])
-	else: 
-		target_pos = global_position + (normal * 100 + forward * 50).normalized() * 15	
+	var l1 = (global_position -  $Femur/Tibia.global_position).length()
+	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
+	
+	var normal_F_dir = normal.rotated(deg_to_rad(-90 * scale.y))
+	vecs_to_draw.push_back([global_position, global_position + normal_F_dir * l1 * 3, Color(0,1,1), 5 ])
+	
+	var d = normal_F_dir.dot(tangent)
+	# if d x<= 0:
+	var rot_vec = normal.rotated(-1 * scale.y *  abs(d) if is_counter_clockwise_turning else abs(d)* scale.y)
+	rot_vec = normal.rotated(-PI/2)
+	vecs_to_draw.push_back([global_position, global_position + normal * l1 * 3, Color(1,0,1), 3 ])
+	vecs_to_draw.push_back([global_position, global_position + rot_vec * l1 * 3, Color(0,0,1), 3 ])
+	
+	var v = (rot_vec + leg_F_dir + normal * (0 if d <= 0 else 1))  
+	v = normal
+	#v = leg_F_dir.rotated(-PI/2)
+
+	target_pos = global_position + v.normalized() * (l1 + l2) * 0.8
+	
+	vecs_to_draw.push_back([global_position, target_pos, Color(1,1,1), 5 ])
 	
 func get_force_dir():	
 	var leg_right = (Vector2.UP * scale).rotated($Femur.global_rotation)

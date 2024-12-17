@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://d3vjmvbxbbxsg"]
 
 [ext_resource type="Script" path="res://BugWork/segment.gd" id="1_ebgex"]
-[ext_resource type="Script" path="res://BugWork/Leg.gd" id="2_ilinu"]
+[ext_resource type="Script" path="res://BugWork/leg.gd" id="2_ilinu"]
 [ext_resource type="Texture2D" uid="uid://bkcjt4ui7lqgf" path="res://Assets/Sprites/sam_spritesheet.png" id="3_l3sf3"]
 [ext_resource type="Texture2D" uid="uid://d2me6yshragpv" path="res://Assets/Sprites/sam_body_animation.png" id="4_txj6g"]
 
@@ -58,11 +58,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="bug_enemy" type="RigidBody2D" node_paths=PackedStringArray("left_legs", "right_legs")]
+[node name="bug_enemy" type="RigidBody2D" node_paths=PackedStringArray("set_1_legs", "set_2_legs")]
 gravity_scale = 0.0
 script = ExtResource("1_ebgex")
-left_legs = [NodePath("CollisionShape2D/LeftLeg"), NodePath("CollisionShape2D/LeftLeg2"), NodePath("CollisionShape2D/LeftLeg3")]
-right_legs = [NodePath("CollisionShape2D/RightLeg"), NodePath("CollisionShape2D/RightLeg2"), NodePath("CollisionShape2D/RightLeg3")]
+set_1_legs = [NodePath("CollisionShape2D/LeftLeg"), NodePath("CollisionShape2D/RightLeg2"), NodePath("CollisionShape2D/LeftLeg3")]
+set_2_legs = [NodePath("CollisionShape2D/RightLeg"), NodePath("CollisionShape2D/LeftLeg2"), NodePath("CollisionShape2D/RightLeg3")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 0)
@@ -74,6 +74,10 @@ rotation = -1.57079
 scale = Vector2(1, -1)
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/LeftLeg"]
 color = Color(0.0352941, 1, 1, 1)
@@ -104,6 +108,10 @@ position = Vector2(8, 12)
 rotation = 1.5708
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/RightLeg"]
 color = Color(0.0352941, 1, 1, 1)
@@ -135,6 +143,10 @@ rotation = -1.57079
 scale = Vector2(1, -1)
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/LeftLeg2"]
 color = Color(0.0352941, 1, 1, 1)
@@ -165,6 +177,10 @@ position = Vector2(-4, 12)
 rotation = 1.5708
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/RightLeg2"]
 color = Color(0.0352941, 1, 1, 1)
@@ -196,6 +212,10 @@ rotation = -1.57079
 scale = Vector2(1, -1)
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/LeftLeg3"]
 color = Color(0.0352941, 1, 1, 1)
@@ -226,6 +246,10 @@ position = Vector2(-16, 12)
 rotation = 1.5708
 color = Color(0.070478, 0.21136, 0.24672, 1)
 script = ExtResource("2_ilinu")
+shoulder_rotate_speed = 2
+elbow_rotate_speed = 2
+muscle_strength = 6.0
+time_sec_before_release = 8
 
 [node name="Femur" type="Polygon2D" parent="CollisionShape2D/RightLeg3"]
 color = Color(0.0352941, 1, 1, 1)

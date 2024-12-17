@@ -10,6 +10,8 @@ func _input(event):
 	# Check if the "R" key is pressed
 	if event.is_action_pressed("reload_scene"):
 		reload_scene()
+	if event.is_action_pressed("pause"):
+		get_tree().paused = !get_tree().paused
 
 func reload_scene():
 	# Reload the current scene

@@ -1,18 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://duuv0jmitprcq"]
+[gd_scene load_steps=7 format=3 uid="uid://duuv0jmitprcq"]
 
 [ext_resource type="Script" path="res://BugWork/target.gd" id="1_dwqh6"]
 [ext_resource type="Script" path="res://BugWork/always_up.gd" id="2_6evn1"]
+[ext_resource type="Shader" path="res://BugWork/grid1.gdshader" id="3_2t8wo"]
 [ext_resource type="PackedScene" uid="uid://d3vjmvbxbbxsg" path="res://BugWork/bug_enemy.tscn" id="3_lpspk"]
+[ext_resource type="Script" path="res://BugWork/grid.gd" id="4_1t4en"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cgxum"]
+shader = ExtResource("3_2t8wo")
+shader_parameter/grid_size_pixels = Vector2(20, 20)
+shader_parameter/grid_color = Vector4(0.6, 0.6, 0.6, 1)
+shader_parameter/background_color = Vector4(0.2, 0.2, 0.2, 1)
+shader_parameter/scale = Vector2(1000, 1000)
+shader_parameter/world_position = Vector2(0, 0)
 
 [node name="Bug" type="Node2D"]
 
 [node name="dummy_target" type="Node2D" parent="."]
-position = Vector2(66, 40)
+process_mode = 3
 script = ExtResource("1_dwqh6")
 speed = 100
 
 [node name="Camera2D" type="Camera2D" parent="dummy_target"]
 script = ExtResource("2_6evn1")
+
+[node name="Grid" type="Polygon2D" parent="dummy_target/Camera2D"]
+material = SubResource("ShaderMaterial_cgxum")
+scale = Vector2(1000, 1000)
+polygon = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
+uv = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
+script = ExtResource("4_1t4en")
 
 [node name="Polygon2D" type="Polygon2D" parent="dummy_target"]
 position = Vector2(-1.52588e-05, 0)
@@ -21,7 +38,16 @@ color = Color(0.605013, 1, 0.371121, 1)
 polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
 
 [node name="bug_enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_lpspk")]
-position = Vector2(124, 88)
-linear_damp = 3.424
-angular_damp = 27.088
+position = Vector2(117, 92)
 target = NodePath("../dummy_target")
+max_velocity = 100.0
+max_angular_velocity = 1.0
+rejection_damping = 0.0
+away_from_target_damping = 0
+angular_damping = 0
+
+[node name="Center" type="Polygon2D" parent="."]
+position = Vector2(130, 10)
+scale = Vector2(9, 9)
+color = Color(0.905449, 0.84808, 0.996634, 1)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
