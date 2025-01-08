@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://duuv0jmitprcq"]
+[gd_scene load_steps=8 format=3 uid="uid://duuv0jmitprcq"]
 
-[ext_resource type="Script" path="res://BugWork/target.gd" id="1_dwqh6"]
 [ext_resource type="Script" path="res://BugWork/always_up.gd" id="2_6evn1"]
 [ext_resource type="Shader" path="res://BugWork/grid1.gdshader" id="3_2t8wo"]
-[ext_resource type="PackedScene" uid="uid://d3vjmvbxbbxsg" path="res://BugWork/bug_enemy.tscn" id="3_lpspk"]
 [ext_resource type="Script" path="res://BugWork/grid.gd" id="4_1t4en"]
+[ext_resource type="Script" path="res://BugWork/DummyTarget.gd" id="4_b35tf"]
+[ext_resource type="PackedScene" uid="uid://24k53kvvjkia" path="res://BugWork/one_leg_bug.tscn" id="6_6evdb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cgxum"]
 shader = ExtResource("3_2t8wo")
@@ -14,40 +14,47 @@ shader_parameter/background_color = Vector4(0.2, 0.2, 0.2, 1)
 shader_parameter/scale = Vector2(1000, 1000)
 shader_parameter/world_position = Vector2(0, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wqy4i"]
+
 [node name="Bug" type="Node2D"]
-
-[node name="dummy_target" type="Node2D" parent="."]
-process_mode = 3
-script = ExtResource("1_dwqh6")
-speed = 100
-
-[node name="Camera2D" type="Camera2D" parent="dummy_target"]
-script = ExtResource("2_6evn1")
-
-[node name="Grid" type="Polygon2D" parent="dummy_target/Camera2D"]
-material = SubResource("ShaderMaterial_cgxum")
-scale = Vector2(1000, 1000)
-polygon = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
-uv = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
-script = ExtResource("4_1t4en")
-
-[node name="Polygon2D" type="Polygon2D" parent="dummy_target"]
-position = Vector2(-1.52588e-05, 0)
-scale = Vector2(10, 10)
-color = Color(0.605013, 1, 0.371121, 1)
-polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
-
-[node name="bug_enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_lpspk")]
-position = Vector2(117, 92)
-target = NodePath("../dummy_target")
-max_velocity = 100.0
-max_angular_velocity = 1.0
-rejection_damping = 0.0
-away_from_target_damping = 0
-angular_damping = 0
 
 [node name="Center" type="Polygon2D" parent="."]
 position = Vector2(130, 10)
 scale = Vector2(9, 9)
 color = Color(0.905449, 0.84808, 0.996634, 1)
 polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="one_leg_bug" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_6evdb")]
+position = Vector2(44, 72)
+can_sleep = false
+linear_damp = 1.0
+angular_damp = 0.1
+target = NodePath("../DummyTarget")
+
+[node name="DummyTarget" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+lock_rotation = true
+continuous_cd = 2
+linear_damp = 10.0
+angular_damp = 5.0
+script = ExtResource("4_b35tf")
+
+[node name="Camera2D" type="Camera2D" parent="DummyTarget"]
+script = ExtResource("2_6evn1")
+
+[node name="Grid" type="Polygon2D" parent="DummyTarget/Camera2D"]
+material = SubResource("ShaderMaterial_cgxum")
+position = Vector2(2, 0)
+scale = Vector2(1000, 1000)
+polygon = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
+uv = PackedVector2Array(-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
+script = ExtResource("4_1t4en")
+
+[node name="Polygon2D" type="Polygon2D" parent="DummyTarget"]
+position = Vector2(-1.52588e-05, 0)
+scale = Vector2(10, 10)
+color = Color(0.605013, 1, 0.371121, 1)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DummyTarget"]
+shape = SubResource("RectangleShape2D_wqy4i")
