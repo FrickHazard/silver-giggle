@@ -9,7 +9,7 @@ enum LegState {
 	LIMP
 }
 # Epsilon in pixels (used as grab distance)
-var EPS = 1
+var EPS = 0.001
 # Joint constraints in radians
 @export var shoulder_min = deg_to_rad(-60.0) # fowrard angle limit
 @export var shoulder_max = deg_to_rad(60.0) # backward angle limit
@@ -17,8 +17,8 @@ var EPS = 1
 @export var elbow_min = deg_to_rad(-100.0)   # fowrard angle limit
 @export var elbow_max = deg_to_rad(100.0)  # backward angle limit
 
-@export var shoulder_rotate_speed = 1
-@export var elbow_rotate_speed = 1
+@export var shoulder_rotate_speed = 3
+@export var elbow_rotate_speed = 3
 
 @export var muscle_strength: float = 4
 
@@ -81,7 +81,7 @@ func _draw() -> void:
 		draw_vector(to_local(vec[0]), to_local(vec[1]), vec[2], vec[3])
 	vecs_to_draw = []
 
-func _process(delta):
+func _physics_process(delta):
 	if target_pos == null:
 		return		
 	queue_redraw()
@@ -156,109 +156,14 @@ func get_straight_grabbed_pos():
 	circle_buf.push_back([x, 3, Color(1, 1, 0)])
 	return x
 
-func absorb_force(force_on_pos: Vector2):
-	if not is_grabbing:
-		return Vector2(0, 0)
-	var absorb = 30
-	var k = 10
-	var l1 = (global_position -  $Femur/Tibia.global_position).length()
-	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
-	# var rest_length = (l1 + l2) / 2
-	
-	# Hookers law for springs modifed with an at rest range instead of single value
-	var rest_len_min = (l1 + l2) * 0
-	var rest_len_max = (l1 + l2) * 0.8
-	
-	
-	var leg_vec = grabbed_pos - global_position
-	# var leg_vec = $Femur/Tibia/Hand.global_position - global_position
-	var current_length = leg_vec.length()
-	var leg_dir = leg_vec.normalized()
-	
-	var delta_len = current_length - rest_len_max if current_length > rest_len_max else current_length - rest_len_min if current_length < rest_len_min else 0
-	
-	var spring_force = k * (delta_len) * leg_dir
-	
-	# Ground absorption
-	#var proj = velocity_at_joint.project(leg_dir)
-	#var absorb_force = -1 * proj.normalized() * min(absorb, proj.length())
-	#if proj.dot(leg_dir) > 0:
-		#vecs_to_draw.push_back([global_position, global_position + absorb_force * (l1 + l2) * 1, Color(1,1,1), 5 ])
-	# return (absorb_force if proj.dot(leg_dir) > 0 else Vector2(0, 0))
-	
-	return - force_on_pos
-	
-# Calculate where to place leg for direction of movement
-func set_ik_leg_target_for_step_old_old(global_target: Vector2, is_counter_clockwise_turning: bool):
-	var leg_dir = Vector2.RIGHT.rotated(global_rotation)
-	var leg_F_dir = (Vector2.UP * scale).rotated(global_rotation)
-	
-	var tangent = (global_target - global_position).normalized()
-	var normal1 = Vector2(tangent.y, -tangent.x)
-	var normal2 = normal1 * -1
-	var normal = normal1 if normal1.dot(leg_dir) > normal2.dot(leg_dir) else normal2
-	
-	var l1 = (global_position -  $Femur/Tibia.global_position).length()
-	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
-	
-	var normal_F_dir = normal.rotated(deg_to_rad(-90 * scale.y))
-	vecs_to_draw.push_back([global_position, global_position + normal_F_dir * l1 * 3, Color(0,1,1), 5 ])
-	
-	var d = normal_F_dir.dot(tangent)
-	# if d x<= 0:
-	var rot_vec = normal.rotated(-1 * scale.y *  abs(d) if is_counter_clockwise_turning else abs(d)* scale.y)
-	rot_vec = normal.rotated(-PI/2)
-	vecs_to_draw.push_back([global_position, global_position + normal * l1 * 3, Color(1,0,1), 3 ])
-	vecs_to_draw.push_back([global_position, global_position + rot_vec * l1 * 3, Color(0,0,1), 3 ])
-	
-	var v = (rot_vec + leg_F_dir + normal * (0 if d <= 0 else 1))  
-	v = normal
-	#v = leg_F_dir.rotated(-PI/2)
-
-	target_pos = global_position + v.normalized() * (l1 + l2) * 0.8
-	
-	vecs_to_draw.push_back([global_position, target_pos, Color(1,1,1), 5 ])
-
-func set_ik_leg_target_for_step_old(global_target: Vector2):
-	var l1 = (global_position -  $Femur/Tibia.global_position).length()
-	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
-	
-	#var leg_F = ((global_position - $Femur/Tibia/Hand.global_position).normalized() * scale).rotated(PI/2)
-	var tangent = (global_target - global_position).normalized()
-	var normal = tangent.rotated(PI/2) * scale # / scale = * scale when scale = -1
-	#normal = tangent
-	target_pos = global_position + normal * (l1 + l2) * 0.8
-	vecs_to_draw.push_back([global_position, global_position + normal * (l1 + l2) * 1, Color(1,1,1), 5 ])
-
 func set_ik_leg_target_for_step(global_target: Vector2, body_global_position: Vector2, body_global_angle: float):
 	var l1 = (global_position -  $Femur/Tibia.global_position).length()
 	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
 	var out_segment_vec = (Vector2.RIGHT * scale).rotated(global_rotation)
-	#var leg_F = ((global_position - $Femur/Tibia/Hand.global_position).normalized() * scale).rotated(PI/2)
-	#var tangent = (global_target - global_position).normalized()
-	#var normal_to_target = tangent.rotated(PI/2) * scale # / scale = * scale when scale = -1
-	#normal = tangent
-	#target_pos = global_position +  (out_segment_vec * 3 + normal_to_target).normalized() * (l1 + l2) * 0.75
-	
-	
-	#var tangent = (global_target - global_segment).normalized()
-	#var normal_to_target = tangent.rotated(PI/2) * scale # / scale = * scale when scale = -1
-	#var leg_body_offset = position
-	#var leg_target = global_target + leg_body_offset.rotated(tangent.angle()) + normal_to_target * (l1 + l2) * 0.8
-	#target_pos = global_position + (leg_target- global_position).normalized() * (l1 + l2) * 0.9	
-	#target_pos = global_position + (normal_to_target + out_segment_vec).normalized() * (l1 + l2) * 0.9
-	#target_pos = global_position + (global_target - global_position).normalized() * (l1 + l2) * 0.9
-	#target_pos = global_position + (out_segment_vec + (global_target - global_position).normalized()).normalized() * (l1 + l2) * 0.9
 	var tangent = (global_target - global_position).normalized()
 	var angle = (global_target - body_global_position).angle() - body_global_angle
 	target_pos = global_position +  Vector2().from_angle(rotate_toward(out_segment_vec.angle(), out_segment_vec.angle() + angle, 0.2)) * (l1 + l2) * 0.75
 	vecs_to_draw.push_back([global_position, target_pos, Color(1,1,1), 5 ])
-	
-	
-	
-	
-	
-	
 
 func get_force_dir():	
 	# var leg_right = (Vector2.UP * scale).rotated($Femur.global_rotation)
