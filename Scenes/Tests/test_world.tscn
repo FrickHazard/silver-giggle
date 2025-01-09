@@ -1,12 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://baaqdc7p2hdfj"]
+[gd_scene load_steps=9 format=3 uid="uid://baaqdc7p2hdfj"]
 
 [ext_resource type="PackedScene" uid="uid://djcqoykjogvw4" path="res://Levels/Levels.ldtk" id="1_fo8sa"]
 [ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="2_7e27q"]
-[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/post_processing.tscn" id="2_85jws"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/Utility/post_processing.tscn" id="2_85jws"]
 [ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="4_r2730"]
 [ext_resource type="AudioStream" uid="uid://i2o515xhrpbf" path="res://Audio/Ambient/cave_wind.mp3" id="6_2y5ce"]
 [ext_resource type="AudioStream" uid="uid://dffaaapoqw01" path="res://Audio/Music/lil_song.mp3" id="7_4nreu"]
-[ext_resource type="PackedScene" uid="uid://d3vjmvbxbbxsg" path="res://BugWork/bug_enemy.tscn" id="7_h7hpd"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0
@@ -38,7 +37,7 @@ func _process(delta: float) -> void:
 [node name="Levels" parent="." instance=ExtResource("1_fo8sa")]
 
 [node name="Player" parent="." instance=ExtResource("2_7e27q")]
-position = Vector2(239, -62)
+position = Vector2(325, -112)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(100, 100)
@@ -47,6 +46,7 @@ player = NodePath("../Player")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Camera2D"]
 position = Vector2(18, -30)
+emitting = false
 amount = 100
 process_material = SubResource("ParticleProcessMaterial_g25d7")
 lifetime = 6.0
@@ -89,7 +89,3 @@ parameters/looping = true
 [node name="PostProcessing" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_85jws")]
 script = SubResource("GDScript_71laa")
 target = NodePath("../Camera2D")
-
-[node name="bug_enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_h7hpd")]
-position = Vector2(99, -93)
-target = NodePath("../Player")

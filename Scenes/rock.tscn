@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdmxnn4qvcyvh"]
+[gd_scene load_steps=7 format=3 uid="uid://bdmxnn4qvcyvh"]
 
-[ext_resource type="Script" path="res://Scripts/Player/Abilities/rock.gd" id="1_engde"]
+[ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_2s2mc"]
 [ext_resource type="Texture2D" uid="uid://clk8xbjbu5201" path="res://Assets/Sprites/circle.png" id="1_fimsg"]
+[ext_resource type="AudioStream" uid="uid://c48ln8lm15fed" path="res://Audio/SFX/land.wav" id="2_v2vau"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yepaj"]
 friction = 0.6
@@ -10,12 +11,25 @@ bounce = 0.45
 [sub_resource type="CircleShape2D" id="CircleShape2D_tgsmb"]
 radius = 1.0
 
-[node name="Rock" type="RigidBody2D"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y686n"]
+particle_flag_disable_z = true
+angle_min = -720.0
+angle_max = 720.0
+spread = 180.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 98, 0)
+
+[node name="Rock" type="RigidBody2D" node_paths=PackedStringArray("particles", "collider", "sound_player")]
 mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_yepaj")
 continuous_cd = 1
-script = ExtResource("1_engde")
-lifespan = 2.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_2s2mc")
+particles = NodePath("GPUParticles2D")
+collider = NodePath("RockCollider")
+sound_player = NodePath("AudioPlayer")
+collision_sound = ExtResource("2_v2vau")
 
 [node name="RockCollider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tgsmb")
@@ -23,3 +37,15 @@ shape = SubResource("CircleShape2D_tgsmb")
 [node name="RockVisual" type="Sprite2D" parent="RockCollider"]
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_fimsg")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_y686n")
+one_shot = true
+explosiveness = 1.0
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = -10.0
+max_distance = 500.0
+bus = &"SFX"
