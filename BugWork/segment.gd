@@ -5,6 +5,7 @@ extends RigidBody2D
 @export var max_angular_velocity = 0.8
 @export var set_1_legs: Array[SegmentLeg] = []
 @export var set_2_legs: Array[SegmentLeg] = []
+@export var min_step_distance_px = 4;
 
 var v0 = Vector2(0,0)
 var r0 = 0
@@ -111,16 +112,20 @@ func transition_legs():
 		is_set_1_reaching = !is_set_1_reaching
 		for leg in set_1_legs:
 			if is_set_1_reaching:
-				leg.release_grip()
-				leg.leg_state = SegmentLeg.LegState.REACHING
-				leg.set_ik_leg_target_for_step(heading_point, global_position, global_rotation)
+				var next_target = leg.compute_ik_leg_target(heading_point, global_position, global_rotation)
+				if not leg.grabbed_pos or next_target.distance_to(leg.grabbed_pos) > min_step_distance_px:
+					leg.release_grip()
+					leg.leg_state = SegmentLeg.LegState.REACHING
+					leg.target_pos = next_target
 			else:
 				leg.leg_state = SegmentLeg.LegState.STANDING
-		for leg in set_2_legs:
+		for leg in set_2_legs:			
 			if not is_set_1_reaching:
-				leg.release_grip()
-				leg.leg_state = SegmentLeg.LegState.REACHING
-				leg.set_ik_leg_target_for_step(heading_point, global_position, global_rotation)
+				var next_target = leg.compute_ik_leg_target(heading_point, global_position, global_rotation)
+				if not leg.grabbed_pos or next_target.distance_to(leg.grabbed_pos) > min_step_distance_px:
+					leg.release_grip()
+					leg.leg_state = SegmentLeg.LegState.REACHING
+					leg.target_pos = next_target
 			else:
 				leg.leg_state = SegmentLeg.LegState.STANDING
 	
@@ -166,16 +171,10 @@ func _physics_process(delta):
 	# Free legs move to position for next step	
 	for leg in legs:
 		if leg.leg_state == SegmentLeg.LegState.REACHING:
-			leg.set_ik_leg_target_for_step(heading_point, global_position, global_rotation)
+			var next_target = leg.compute_ik_leg_target(heading_point, global_position, global_rotation)
+			leg.target_pos = next_target
+
 	transition_legs()
-
-var internal_forces = []
-func apply_internal_force(state: PhysicsDirectBodyState2D, force: Vector2, position: Vector2):
-	# https://github.com/godotengine/godot/blob/33957aee69683cf1f542a8622e5a9efd23070f1c/servers/physics_2d/godot_body_2d.h#L256
-	var torque = (position - center_of_mass).cross(force);
-	internal_forces.append([force, torque])
-	state.apply_force(force, position)
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -189,10 +188,16 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 			if leg.is_grabbing and leg.leg_state == SegmentLeg.LegState.STANDING:
 				var dir_F = leg.get_force_dir()
-				var force = dir_F * leg.muscle_strength
-				var torque = (leg.global_position - global_position).cross(force)
-				state.angular_velocity += torque / get_inertiaR()
-				state.linear_velocity += force
+				
+				if dir_F.dot((target.global_position - global_position).normalized()) > 0.8:
+					var force = dir_F * leg.muscle_strength * leg.get_muscle_strength_percent()
+					var torque = (leg.global_position - global_position).cross(force)
+					state.angular_velocity += torque / get_inertiaR()
+					state.linear_velocity += force
+					
+				
+				
+			
 
 	# Leg torque straightening	
 	for leg in legs:

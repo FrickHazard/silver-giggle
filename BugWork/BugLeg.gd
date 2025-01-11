@@ -9,7 +9,7 @@ enum LegState {
 	LIMP
 }
 # Epsilon in pixels (used as grab distance)
-var EPS = 0.001
+var EPS = 0.1
 # Joint constraints in radians
 @export var shoulder_min = deg_to_rad(-60.0) # fowrard angle limit
 @export var shoulder_max = deg_to_rad(60.0) # backward angle limit
@@ -17,8 +17,8 @@ var EPS = 0.001
 @export var elbow_min = deg_to_rad(-100.0)   # fowrard angle limit
 @export var elbow_max = deg_to_rad(100.0)  # backward angle limit
 
-@export var shoulder_rotate_speed = 3
-@export var elbow_rotate_speed = 3
+@export var shoulder_rotate_speed = 8
+@export var elbow_rotate_speed = 8
 
 @export var muscle_strength: float = 4
 
@@ -156,14 +156,17 @@ func get_straight_grabbed_pos():
 	circle_buf.push_back([x, 3, Color(1, 1, 0)])
 	return x
 
-func set_ik_leg_target_for_step(global_target: Vector2, body_global_position: Vector2, body_global_angle: float):
+func compute_ik_leg_target(global_target: Vector2, body_global_position: Vector2, body_global_angle: float) -> Vector2:
 	var l1 = (global_position -  $Femur/Tibia.global_position).length()
 	var l2 = ($Femur/Tibia.global_position - $Femur/Tibia/Hand.global_position).length()
 	var out_segment_vec = (Vector2.RIGHT * scale).rotated(global_rotation)
 	var tangent = (global_target - global_position).normalized()
 	var angle = (global_target - body_global_position).angle() - body_global_angle
-	target_pos = global_position +  Vector2().from_angle(rotate_toward(out_segment_vec.angle(), out_segment_vec.angle() + angle, 0.2)) * (l1 + l2) * 0.75
-	vecs_to_draw.push_back([global_position, target_pos, Color(1,1,1), 5 ])
+	# computed target pos
+	var target_pos = global_position +  Vector2().from_angle(rotate_toward(out_segment_vec.angle(), out_segment_vec.angle() + angle, 0.2)) * (l1 + l2) * 0.75
+	# Apply ik constraints so its actually reachable from leg	
+	var ik_result = solve_ik(Vector2(0,0), to_local(target_pos), l1, l2)
+	return to_global(ik_result[2])
 
 func get_force_dir():	
 	# var leg_right = (Vector2.UP * scale).rotated($Femur.global_rotation)
