@@ -1,0 +1,131 @@
+[gd_scene load_steps=16 format=4 uid="uid://e6booqui5inj"]
+
+[ext_resource type="PackedScene" uid="uid://3sy1jmwarmdo" path="res://Scenes/player.tscn" id="1_hus7u"]
+[ext_resource type="Script" path="res://Scripts/basic_camera_follow.gd" id="2_p8oqk"]
+[ext_resource type="Shader" path="res://Materials/Shaders/distortion.gdshader" id="3_c11m2"]
+[ext_resource type="Texture2D" uid="uid://b0clw70tfejak" path="res://Assets/background1.png" id="4_e2r2d"]
+[ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/Utility/post_processing.tscn" id="5_x8xdl"]
+[ext_resource type="Script" path="res://Scripts/World/Systems/daylight_cycle.gd" id="6_sgmoi"]
+[ext_resource type="TileSet" uid="uid://ci0ht83micr0h" path="res://Assets/tileset.tres" id="7_g2tq7"]
+[ext_resource type="Texture2D" uid="uid://bo32hdwjsmgox" path="res://Assets/Light.png" id="8_x0p3f"]
+[ext_resource type="Script" path="res://Scripts/World/Decorative/animated_light.gd" id="9_hf3nf"]
+[ext_resource type="PackedScene" uid="uid://bj680ngc1ayww" path="res://BugWork/new_bug_scene.tscn" id="10_vnjc6"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_af520"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3dskm"]
+width = 200
+height = 200
+noise = SubResource("FastNoiseLite_af520")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tc8ld"]
+shader = ExtResource("3_c11m2")
+shader_parameter/noise_scale = 1.0
+shader_parameter/noise_strength = 0.141
+shader_parameter/displacement_strength = 0.1
+shader_parameter/wave_frequency = 1.0
+shader_parameter/wave_amplitude = 0.04
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_3dskm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u5c51"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(100, 100, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 0, 0)
+gravity = Vector3(-100, 100, 0)
+turbulence_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_j4vai"]
+script/source = "extends CanvasLayer
+
+@export var target : Node2D
+
+func _process(_delta: float) -> void:
+	#position = camera_global.position
+	pass
+"
+
+[node name="Bug_Arena" type="Node2D"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="Player" parent="." instance=ExtResource("1_hus7u")]
+position = Vector2(109, 32)
+collision_layer = 3
+collision_mask = 3
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(100, 100)
+script = ExtResource("2_p8oqk")
+player = NodePath("../Player")
+
+[node name="Background" type="Sprite2D" parent="Camera2D"]
+z_index = -5
+material = SubResource("ShaderMaterial_tc8ld")
+texture = ExtResource("4_e2r2d")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Camera2D"]
+visible = false
+z_index = 5
+position = Vector2(18, -30)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_u5c51")
+lifetime = 6.0
+
+[node name="PostProcessing" parent="." instance=ExtResource("5_x8xdl")]
+visible = false
+script = SubResource("GDScript_j4vai")
+
+[node name="DaylightManager" type="Node2D" parent="." node_paths=PackedStringArray("light_node")]
+script = ExtResource("6_sgmoi")
+default_start_time = 0.0
+light_node = NodePath("DirectionalLight2D")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="DaylightManager"]
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="WalkingLayer" type="TileMapLayer" parent="World"]
+tile_map_data = PackedByteArray("AAAAABUAAQACAAEAAAAAABQAAQACAAEAAAAAABMAAQACAAEAAAAAABIAAQACAAEAAAAAABEAAQACAAEAAAAYABgAAQACAAEAAAAYABcAAQACAAEAAAAYABYAAQACAAEAAAAYABUAAQACAAEAAAAYABQAAQACAAEAAAAYABMAAQACAAEAAAAYABIAAQACAAEAAAAYABEAAQACAAEAAAAAABgAAQACAAEAAAAAABcAAQACAAEAAAAAABYAAQACAAEAAAD//xgAAQABAAEAAAD//xcAAQABAAEAAAD//xYAAQABAAEAAAD//xUAAQABAAEAAAD//xQAAQABAAEAAAD//xMAAQABAAEAAAD//xIAAQABAAEAAAD//xEAAQABAAEAAAD//xAAAQABAAEAAAAYABkAAQACAAIAAAAXABkAAQACAAIAAAAWABkAAQACAAIAAAAVABkAAQACAAIAAAAUABkAAQACAAIAAAATABkAAQACAAIAAAASABkAAQACAAIAAAARABkAAQACAAIAAAAQABkAAQACAAIAAAAPABkAAQACAAIAAAAOABkAAQACAAIAAAANABkAAQACAAIAAAAMABkAAQACAAIAAAALABkAAQACAAIAAAAKABkAAQACAAIAAAAJABkAAQACAAIAAAAIABkAAQACAAIAAAAHABkAAQACAAIAAAAGABkAAQACAAIAAAAFABkAAQACAAIAAAAEABkAAQACAAIAAAADABkAAQACAAIAAAACABkAAQACAAIAAAABABkAAQACAAIAAAAAABkAAQACAAIAAAD//xkAAQABAAIAAAAAABAAAQACAAEAAAAAAA8AAQACAAEAAAAAAA4AAQACAAEAAAAAAA0AAQACAAEAAAAAAAwAAQACAAEAAAAAAAsAAQACAAEAAAAAAAoAAQACAAEAAAAAAAkAAQACAAEAAAAAAAgAAQACAAEAAAAAAAcAAQACAAEAAAAAAAYAAQACAAEAAAD//w8AAQABAAEAAAD//w4AAQABAAEAAAD//w0AAQABAAEAAAD//wwAAQABAAEAAAD//wsAAQABAAEAAAD//woAAQABAAEAAAD//wkAAQABAAEAAAD//wgAAQABAAEAAAD//wcAAQABAAEAAAD//wYAAQABAAEAAAANAAAAAQACAAEAAAANAP//AQACAAAAAAAMAAAAAQACAAEAAAAMAP//AQACAAAAAAALAAAAAQACAAEAAAALAP//AQACAAAAAAAKAAAAAQACAAEAAAAKAP//AQACAAAAAAAJAAAAAQACAAEAAAAJAP//AQACAAAAAAAIAAAAAQACAAEAAAAIAP//AQACAAAAAAAHAAAAAQACAAEAAAAHAP//AQACAAAAAAAGAAAAAQACAAEAAAAGAP//AQACAAAAAAAFAAAAAQACAAEAAAAFAP//AQACAAAAAAAEAAAAAQACAAEAAAAEAP//AQACAAAAAAADAAAAAQACAAEAAAADAP//AQACAAAAAAACAAAAAQACAAEAAAACAP//AQACAAAAAAABAAAAAQACAAEAAAABAP//AQACAAAAAAAAAAUAAQACAAEAAAAAAAQAAQACAAEAAAAAAAMAAQACAAEAAAAAAAIAAQACAAEAAAAAAAEAAQACAAEAAAAAAAAAAQACAAEAAAAAAP//AQACAAAAAAD//wUAAQABAAEAAAD//wQAAQABAAEAAAD//wMAAQABAAEAAAD//wIAAQABAAEAAAD//wEAAQABAAEAAAD//wAAAQABAAEAAAD/////AQABAAAAAAAYAAUAAQAAAAEAAAAYAAQAAQAAAAEAAAAYAAMAAQACAAEAAAAYAAIAAQACAAEAAAAYAAEAAQACAAEAAAAYAAAAAQACAAEAAAAYAP//AQACAAAAAAAXAAAAAQACAAEAAAAXAP//AQACAAAAAAAWAAAAAQACAAEAAAAWAP//AQACAAAAAAAVAAAAAQACAAEAAAAVAP//AQACAAAAAAAUAAAAAQACAAEAAAAUAP//AQACAAAAAAATAAAAAQACAAEAAAATAP//AQACAAAAAAASAAAAAQACAAEAAAASAP//AQACAAAAAAARAAAAAQACAAEAAAARAP//AQACAAAAAAAQAAAAAQACAAEAAAAQAP//AQACAAAAAAAPAAAAAQACAAEAAAAPAP//AQACAAAAAAAOAAAAAQACAAEAAAAOAP//AQACAAAAAAAYAA8AAQACAAAAAAAYAAwAAQAAAAEAAAAYAAsAAQAAAAEAAAAYAAoAAQAAAAEAAAAYAAkAAQAAAAEAAAAYAAgAAQAAAAEAAAAYAAcAAQAAAAEAAAAYAAYAAQAAAAEAAAAYAA0AAQAAAAEAAAAYAA4AAQAAAAEAAAAYABAAAQACAAEAAAAWABcAAAABAAIAAAAXABUAAAABAAIAAAAWABMAAAABAAIAAAAVABEAAAABAAIAAAA=")
+tile_set = ExtResource("7_g2tq7")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(55, 73)
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("8_x0p3f")
+script = ExtResource("9_hf3nf")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(147, 73)
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("8_x0p3f")
+script = ExtResource("9_hf3nf")
+
+[node name="PointLight2D3" type="PointLight2D" parent="."]
+position = Vector2(54, 166)
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("8_x0p3f")
+script = ExtResource("9_hf3nf")
+
+[node name="PointLight2D4" type="PointLight2D" parent="."]
+position = Vector2(151, 165)
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("8_x0p3f")
+script = ExtResource("9_hf3nf")
+
+[node name="New_Bug_Scene" parent="." node_paths=PackedStringArray("target") instance=ExtResource("10_vnjc6")]
+position = Vector2(77, 116)
+gravity_scale = 0.0
+target = NodePath("../Player")

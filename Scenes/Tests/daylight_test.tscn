@@ -7,14 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://bcbar6lbn03dd" path="res://Scenes/Utility/post_processing.tscn" id="4_i86vi"]
 [ext_resource type="Script" path="res://Scripts/World/Systems/daylight_cycle.gd" id="5_oo647"]
 [ext_resource type="PackedScene" uid="uid://d2musgnwt0dj0" path="res://Scenes/World/Creatures/pack_agent.tscn" id="6_3dfcl"]
-[ext_resource type="TileSet" uid="uid://be7nyyssgqur1" path="res://Assets/tileset.tres" id="6_j2vfl"]
+[ext_resource type="TileSet" uid="uid://ci0ht83micr0h" path="res://Assets/tileset.tres" id="6_j2vfl"]
 [ext_resource type="PackedScene" uid="uid://df56fefe6hqro" path="res://Scenes/World/Creatures/wanderer_agent.tscn" id="7_fska4"]
 [ext_resource type="Texture2D" uid="uid://bo32hdwjsmgox" path="res://Assets/Light.png" id="8_efpkk"]
 [ext_resource type="Script" path="res://Scripts/World/Decorative/animated_light.gd" id="9_6qfyj"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_g66rd"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3dskm"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gmbvr"]
 width = 200
 height = 200
 noise = SubResource("FastNoiseLite_g66rd")
@@ -26,7 +26,7 @@ shader_parameter/noise_strength = 0.141
 shader_parameter/displacement_strength = 0.1
 shader_parameter/wave_frequency = 1.0
 shader_parameter/wave_amplitude = 0.04
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_3dskm")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_gmbvr")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g25d7"]
 lifetime_randomness = 1.0

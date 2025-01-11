@@ -1,0 +1,206 @@
+[gd_scene load_steps=13 format=3 uid="uid://bj680ngc1ayww"]
+
+[ext_resource type="Script" path="res://BugWork/segment.gd" id="1_2br1u"]
+[ext_resource type="Script" path="res://BugWork/BugLeg.gd" id="2_o4fc4"]
+[ext_resource type="Texture2D" uid="uid://bkcjt4ui7lqgf" path="res://Assets/Sprites/sam_spritesheet.png" id="3_e4b4s"]
+[ext_resource type="Texture2D" uid="uid://d2me6yshragpv" path="res://Assets/Sprites/sam_body_animation.png" id="4_jr4hg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pmk1o"]
+size = Vector2(46, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1eq7"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(0, 0, 72, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hx0ir"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(72, 0, 72, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7hm5"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(144, 0, 72, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6m6f"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(216, 0, 72, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xstoe"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(288, 0, 72, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkepg"]
+atlas = ExtResource("4_jr4hg")
+region = Rect2(360, 0, 72, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jji50"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1eq7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hx0ir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7hm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6m6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xstoe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nkepg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="New_Bug_Scene" type="RigidBody2D" node_paths=PackedStringArray("set_1_legs", "set_2_legs")]
+script = ExtResource("1_2br1u")
+set_1_legs = [NodePath("CollisionShape2D/RightLeg"), NodePath("CollisionShape2D/LeftLeg2")]
+set_2_legs = [NodePath("CollisionShape2D/LeftLeg"), NodePath("CollisionShape2D/RightLeg2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_pmk1o")
+
+[node name="LeftLeg" type="Polygon2D" parent="CollisionShape2D"]
+z_index = 2
+position = Vector2(16, -12)
+rotation = -1.57079
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("2_o4fc4")
+muscle_strength = 2.0
+
+[node name="Femur" type="Polygon2D" parent="CollisionShape2D/LeftLeg"]
+color = Color(0.0352941, 1, 1, 1)
+
+[node name="Tibia" type="Polygon2D" parent="CollisionShape2D/LeftLeg/Femur"]
+position = Vector2(18, 0.000111111)
+color = Color(1, 1, 0.0745098, 1)
+
+[node name="Hand" type="Polygon2D" parent="CollisionShape2D/LeftLeg/Femur/Tibia"]
+position = Vector2(16, 0.00010198)
+color = Color(0.258824, 1, 0.176471, 1)
+
+[node name="TibiaVisual" type="Sprite2D" parent="CollisionShape2D/LeftLeg/Femur/Tibia"]
+position = Vector2(7.99999, 2.00005)
+rotation = 3.14159
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(24, 0, 16, 8)
+
+[node name="FemurVisual" type="Sprite2D" parent="CollisionShape2D/LeftLeg/Femur"]
+position = Vector2(9, 6.10352e-05)
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 8)
+
+[node name="RightLeg" type="Polygon2D" parent="CollisionShape2D"]
+z_index = 2
+position = Vector2(18, 12)
+rotation = 1.5708
+scale = Vector2(1, -1)
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("2_o4fc4")
+muscle_strength = 2.0
+
+[node name="Femur" type="Polygon2D" parent="CollisionShape2D/RightLeg"]
+color = Color(0.0352941, 1, 1, 1)
+
+[node name="Tibia" type="Polygon2D" parent="CollisionShape2D/RightLeg/Femur"]
+position = Vector2(18, 0.000111111)
+color = Color(1, 1, 0.0745098, 1)
+
+[node name="Hand" type="Polygon2D" parent="CollisionShape2D/RightLeg/Femur/Tibia"]
+position = Vector2(16, 0.00010198)
+color = Color(0.258824, 1, 0.176471, 1)
+
+[node name="TibiaVisual" type="Sprite2D" parent="CollisionShape2D/RightLeg/Femur/Tibia"]
+position = Vector2(7.99999, 2.00005)
+rotation = 3.14159
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(24, 0, 16, 8)
+
+[node name="FemurVisual" type="Sprite2D" parent="CollisionShape2D/RightLeg/Femur"]
+position = Vector2(9, 6.10352e-05)
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 8)
+
+[node name="LeftLeg2" type="Polygon2D" parent="CollisionShape2D"]
+z_index = 2
+position = Vector2(-22, -13)
+rotation = -1.57079
+scale = Vector2(1, -1)
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("2_o4fc4")
+muscle_strength = 2.0
+
+[node name="Femur" type="Polygon2D" parent="CollisionShape2D/LeftLeg2"]
+color = Color(0.0352941, 1, 1, 1)
+
+[node name="Tibia" type="Polygon2D" parent="CollisionShape2D/LeftLeg2/Femur"]
+position = Vector2(18, 0.000111111)
+color = Color(1, 1, 0.0745098, 1)
+
+[node name="Hand" type="Polygon2D" parent="CollisionShape2D/LeftLeg2/Femur/Tibia"]
+position = Vector2(16, 0.00010198)
+color = Color(0.258824, 1, 0.176471, 1)
+
+[node name="TibiaVisual" type="Sprite2D" parent="CollisionShape2D/LeftLeg2/Femur/Tibia"]
+position = Vector2(7.99999, 2.00005)
+rotation = 3.14159
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(24, 0, 16, 8)
+
+[node name="FemurVisual" type="Sprite2D" parent="CollisionShape2D/LeftLeg2/Femur"]
+position = Vector2(9, 6.10352e-05)
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 8)
+
+[node name="RightLeg2" type="Polygon2D" parent="CollisionShape2D"]
+z_index = 2
+position = Vector2(-20, 14)
+rotation = 1.5708
+color = Color(0.070478, 0.21136, 0.24672, 1)
+script = ExtResource("2_o4fc4")
+muscle_strength = 2.0
+
+[node name="Femur" type="Polygon2D" parent="CollisionShape2D/RightLeg2"]
+color = Color(0.0352941, 1, 1, 1)
+
+[node name="Tibia" type="Polygon2D" parent="CollisionShape2D/RightLeg2/Femur"]
+position = Vector2(18, 0.000111111)
+color = Color(1, 1, 0.0745098, 1)
+
+[node name="Hand" type="Polygon2D" parent="CollisionShape2D/RightLeg2/Femur/Tibia"]
+position = Vector2(16, 0.00010198)
+color = Color(0.258824, 1, 0.176471, 1)
+
+[node name="TibiaVisual" type="Sprite2D" parent="CollisionShape2D/RightLeg2/Femur/Tibia"]
+position = Vector2(7.99999, 2.00005)
+rotation = 3.14159
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(24, 0, 16, 8)
+
+[node name="FemurVisual" type="Sprite2D" parent="CollisionShape2D/RightLeg2/Femur"]
+position = Vector2(9, 6.10352e-05)
+texture = ExtResource("3_e4b4s")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 8)
+
+[node name="BodyVisual2" type="AnimatedSprite2D" parent="."]
+z_index = 2
+position = Vector2(6.69, -1)
+rotation = -3.14159
+sprite_frames = SubResource("SpriteFrames_jji50")
+autoplay = "default"
+frame_progress = 0.211131
